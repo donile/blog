@@ -1,8 +1,10 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26124.0
 MinimumVisualStudioVersion = 15.0.26124.0
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "markdonile.com", "markdonile.com.csproj", "{E89B156F-9BCF-4C16-8161-8813C530B9EC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -14,5 +16,19 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Debug|x64.ActiveCfg = Debug|x64
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Debug|x64.Build.0 = Debug|x64
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Debug|x86.ActiveCfg = Debug|x86
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Debug|x86.Build.0 = Debug|x86
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Release|x64.ActiveCfg = Release|x64
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Release|x64.Build.0 = Release|x64
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Release|x86.ActiveCfg = Release|x86
+		{E89B156F-9BCF-4C16-8161-8813C530B9EC}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 EndGlobal
