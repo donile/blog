@@ -1,0 +1,14 @@
+@model IEnumerable<BlogPost>
+
+@{
+    Layout = "_Layout";
+}
+
+@foreach (var blogPost in Model)
+{
+    <div>
+        <h2>@blogPost.Title</h2>
+        <h3>@blogPost.Author</h3>
+        <p>@blogPost.Post</p>
+    </div>
+}
