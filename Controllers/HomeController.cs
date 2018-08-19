@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 
 namespace markdonile.com
 {
@@ -7,6 +8,11 @@ namespace markdonile.com
         public ViewResult Index()
         {
             return View();
+        }
+
+        public ViewResult Error()
+        {
+            return View(new Dictionary<string, string>() { ["Message"] = "An unknown error has occurred." });
         }
     }
 }
