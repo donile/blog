@@ -14,7 +14,7 @@ namespace markdonile.com
 
         public ViewResult List()
         {
-            return View(_blogPostRepository.BlogPosts());
+            return View(_blogPostRepository.BlogPosts);
         }
     }
 }
