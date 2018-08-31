@@ -5,12 +5,15 @@ namespace markdonile.com
 {
     public class FakeBlogPostRespository : IBlogPostRepository
     {
-        public IQueryable<BlogPost> BlogPosts()
+        public IQueryable<BlogPost> BlogPosts
         {
-            return new List<BlogPost>()
-                {
-                    new BlogPost(){Title="First Blog Post", Post="Content of First Post", Author="Mark Donile"}
-                }.AsQueryable();
+            get
+            {
+                return new List<BlogPost>()
+                    {
+                        new BlogPost(){Title="First Blog Post", Post="Content of First Post", Author="Mark Donile"}
+                    }.AsQueryable();
+            }
         }
     }
 }
