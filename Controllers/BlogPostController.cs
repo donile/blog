@@ -5,16 +5,16 @@ namespace markdonile.com
 {
     public class BlogPostController : Controller
     {
-        private IBlogPostRepository _blogPostRepository;
+        private IBlogPostRepository _repository;
 
         public BlogPostController(IBlogPostRepository repository)
         {
-            _blogPostRepository = repository;
+            _repository = repository;
         }
 
         public ViewResult List()
         {
-            return View(_blogPostRepository.BlogPosts);
+            return View(_repository.BlogPosts);
         }
     }
 }
