@@ -466,3 +466,6 @@ ASALocalRun/
 
 
 # End of https://www.gitignore.io/api/csharp,aspnetcore,visualstudiocode
+
+# Sqlite Database files
+*.db
