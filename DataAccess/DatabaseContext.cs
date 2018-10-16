@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace markdonile.com
 {
-    public class DatabaseContext : IdentityDbContext
+    public class DatabaseContext : IdentityDbContext<AppUser>
     {
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
