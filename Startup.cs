@@ -33,6 +33,7 @@ namespace markdonile.com
                 .AddDefaultTokenProviders();
             services.AddTransient<IBlogPostRepository, FakeBlogPostRespository>();
             services.AddMvc();
+            services.ConfigureApplicationCookie(options => options.LoginPath = "/User/Login");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
