@@ -89,5 +89,10 @@ namespace markdonile.com
             }
             return View(model);
         }
+
+        public async Task<IActionResult> SignOutAsync(){
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(LogIn));
+        }
     }
 }
