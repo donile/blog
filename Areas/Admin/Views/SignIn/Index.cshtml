@@ -1,8 +1,8 @@
-@model LogInViewModel
+@model SignInViewModel
 
 <div asp-validation-summary=" All" class="text-danger"></div>
 
-<form asp-action="LogIn" method="POST">
+<form asp-action="SignIn" method="POST">
     <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
     <div>
         <input asp-for="Email" type="email" />
