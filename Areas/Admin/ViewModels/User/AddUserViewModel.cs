@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Admin.ViewModels.User
 {
     public class AddUserViewModel
     {

@@ -20,8 +20,9 @@ namespace MarkDonile.Blog.Admin.Controllers
             _signInManager = signInManager;
         }
 
-        public ViewResult SignIn()
+        public ViewResult SignIn(string returnUrl)
         {
+            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
 

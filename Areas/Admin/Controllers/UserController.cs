@@ -2,10 +2,12 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using MarkDonile.Blog.Admin.ViewModels.User;
 using markdonile.com;
 
 namespace MarkDonile.Blog.Admin.Controllers
 {
+    [Area("Admin")]
     [Authorize]
     public class UserController : Controller
     {
@@ -54,46 +56,6 @@ namespace MarkDonile.Blog.Admin.Controllers
                 }
             }
             return View(model);
-        }
-
-        [AllowAnonymous]
-        public IActionResult LogIn(string returnUrl)
-        {
-            ViewBag.ReturnUrl = returnUrl;
-            return View();
-        }
-
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> LogIn(LogInViewModel model, string returnUrl)
-        {
-            if (ModelState.IsValid)
-            {
-                AppUser user = await _userManager.FindByEmailAsync(model.Email);
-                if (user != null)
-                {
-                    // cancel any existing session for the user
-                    await _signInManager.SignOutAsync();
-                    Microsoft.AspNetCore.Identity.SignInResult result = await _signInManager.PasswordSignInAsync(
-                        user,
-                        model.Password,
-                        isPersistent: false,
-                        lockoutOnFailure: false
-                    );
-                    if (result.Succeeded)
-                    {
-                        return Redirect(returnUrl ?? "/");
-                    }
-                    ModelState.AddModelError(nameof(LogInViewModel.Email), "Invalid email or password.");
-                }
-            }
-            return View(model);
-        }
-
-        public async Task<IActionResult> SignOutAsync(){
-            await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(LogIn));
         }
     }
 }
