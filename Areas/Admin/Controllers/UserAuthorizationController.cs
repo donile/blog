@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using MarkDonile.Blog.Admin.ViewModels;
+using MarkDonile.Blog.Admin.ViewModels.UserAuthorization;
 using markdonile.com;
 
 namespace MarkDonile.Blog.Admin.Controllers
 {
     [Area("Admin")]
-    public class SignInController : Controller
+    public class UserAuthorization : Controller
     {
         private UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
 
-        public SignInController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
+        public UserAuthorization(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public ViewResult Index()
+        public ViewResult SignIn()
         {
             return View();
         }
@@ -55,13 +55,13 @@ namespace MarkDonile.Blog.Admin.Controllers
                     ModelState.AddModelError(nameof(SignInViewModel.Email), "Invalid email or password.");
                 }
             }
-            return View(nameof(Index));
+            return View(nameof(SignIn));
         }
 
         public async Task<IActionResult> SignOutAsync()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(SignIn));
         }
     }
 }

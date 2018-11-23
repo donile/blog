@@ -1,4 +1,4 @@
-namespace MarkDonile.Blog.Admin.ViewModels
+namespace MarkDonile.Blog.Admin.ViewModels.UserAuthorization
 {
     public class SignInViewModel
     {
