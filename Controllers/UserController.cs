@@ -2,8 +2,9 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using markdonile.com;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Admin.Controllers
 {
     [Authorize]
     public class UserController : Controller
