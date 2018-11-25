@@ -17,6 +17,12 @@
                 <td>@user.Id</td>
                 <td>@user.UserName</td>
                 <td>@user.Email</td>
+                <td>
+                    <form asp-action="DeleteAsync" asp-route-id="@user.Id" method="Post">
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@user.Id">Edit</a>
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
             </tr>
         }
     }
