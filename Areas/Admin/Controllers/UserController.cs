@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using MarkDonile.Blog.Admin.ViewModels.User;
+using System.Linq;
 using markdonile.com;
 
 namespace MarkDonile.Blog.Admin.Controllers
@@ -56,6 +57,32 @@ namespace MarkDonile.Blog.Admin.Controllers
                 }
             }
             return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteAsync(string id)
+        {
+            var appUser = await _userManager.FindByIdAsync(id);
+
+            if (appUser == null)
+            {
+                ModelState.AddModelError("", "User not found!");
+                return View(nameof(Index), _userManager.Users);
+            }
+
+            IdentityResult result = await _userManager.DeleteAsync(appUser);
+
+            if (!result.Succeeded)
+            {
+                foreach (IdentityError error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                    return View(nameof(Index), _userManager.Users);
+                }
+            }
+
+            return View(nameof(Index), _userManager.Users);
         }
     }
 }
