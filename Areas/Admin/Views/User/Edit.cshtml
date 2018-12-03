@@ -1,0 +1,23 @@
+@model AppUser
+
+<h4>@ViewContext.RouteData.Values["action"] User</h4>
+
+<div asp-validation-summary="All"></div>
+
+<a asp-controller="UserAuthorization" asp-action="SignOutAsync">Sign Out</a>
+
+<form asp-action="Edit" method="POST">
+    <div hidden>
+        <input asp-for="Id" />
+    </div>
+    <div>
+        <label asp-for="UserName">UserName</label>
+        <input asp-for="UserName" />
+    </div>
+    <div>
+        <label asp-for="Email">Email</label>
+        <input asp-for="Email" type="email"/>
+    </div>
+    <button type="submit">Edit User</button>
+    <a asp-controller="Home" asp-action="Index">Cancel</a>
+</form>

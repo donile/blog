@@ -84,5 +84,60 @@ namespace MarkDonile.Blog.Admin.Controllers
 
             return View(nameof(Index), _userManager.Users);
         }
+
+        public async Task<IActionResult> Edit(string id)
+        {
+
+            var appUser = await _userManager.FindByIdAsync(id);
+
+            if (appUser == null)
+            {
+                ModelState.AddModelError("", "User not found!");
+                return View(nameof(Index), _userManager.Users);
+            }
+
+            return View(appUser);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(AppUser model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            AppUser appUser = await _userManager.FindByIdAsync(model.Id);
+
+            if (appUser == null)
+            {
+                ModelState.AddModelError("", "User not found!");
+                return View(model);
+            }
+
+            appUser.Email = model.Email;
+            appUser.UserName = model.UserName;
+
+            IdentityResult result = await _userManager.UpdateAsync(appUser);
+
+            if (!result.Succeeded)
+            {
+                AddErrors(result);
+                return View(model);
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        // TODO make this an extention method for ModelState
+        private void AddErrors(IdentityResult result)
+        {
+            foreach (IdentityError error in result.Errors)
+            {
+                ModelState.AddModelError("", error.Description);
+
+            }
+        }
     }
 }
