@@ -53,8 +53,8 @@ namespace MarkDonile.Blog.Admin.Controllers
                     {
                         return Redirect(returnUrl ?? "/Admin");
                     }
-                    ModelState.AddModelError(nameof(SignInViewModel.Email), "Invalid email or password.");
                 }
+                ModelState.AddModelError(nameof(SignInViewModel.Email), "Invalid email or password.");
             }
             return View(nameof(SignIn));
         }

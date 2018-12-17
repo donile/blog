@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Data.SqlClient;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,9 +26,9 @@ namespace markdonile.com
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            var connection = "Data Source=Database.db";
+            string connection = ConnectionString();
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlite(connection));
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connection));
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
@@ -62,6 +63,18 @@ namespace markdonile.com
                         template: "{controller=Home}/{action=Index}");
 
                 });
+
+            DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
+        }
+
+        private string ConnectionString()
+        {
+            var connectionBuilder = new SqlConnectionStringBuilder();
+            connectionBuilder.ConnectionString = Configuration["Database:ConnectionString"];
+            connectionBuilder.UserID = Configuration["Database:UserId"];
+            connectionBuilder.Password = Configuration["Database:Password"];
+
+            return connectionBuilder.ConnectionString;
         }
     }
 }
