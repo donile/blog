@@ -1,0 +1,6 @@
+<Project>
+ <PropertyGroup>
+   <BaseOutputPath>../../artifacts/bin/$(Configuration)</BaseOutputPath>
+   <BaseIntermediateOutputPath>../../artifacts/obj/$(Configuration)</BaseIntermediateOutputPath>
+ </PropertyGroup>
+</Project>
