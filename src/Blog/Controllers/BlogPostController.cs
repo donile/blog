@@ -1,7 +1,8 @@
+using MarkDonile.Blog.DataAccess;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Controllers
 {
     public class BlogPostController : Controller
     {

@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using MarkDonile.Blog.Admin.ViewModels.UserAuthorization;
-using markdonile.com;
+using MarkDonile.Blog.Models;
 
 namespace MarkDonile.Blog.Admin.Controllers
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Controllers
 {
     public class HomeController : Controller
     {

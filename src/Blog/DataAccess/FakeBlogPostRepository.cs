@@ -1,7 +1,8 @@
+using MarkDonile.Blog.Models;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.DataAccess
 {
     public class FakeBlogPostRespository : IBlogPostRepository
     {

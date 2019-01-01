@@ -1,6 +1,6 @@
 using System;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Models
 {
     public class BlogPost
     {

@@ -1,6 +1,7 @@
+using MarkDonile.Blog.Models;
 using System.Linq;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.DataAccess
 {
     public interface IBlogPostRepository
     {

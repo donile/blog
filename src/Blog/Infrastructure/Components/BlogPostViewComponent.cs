@@ -1,7 +1,9 @@
+using MarkDonile.Blog.DataAccess;
+using MarkDonile.Blog.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Infrastructure.ViewComponents
 {
     public class BlogPostViewComponent : ViewComponent
     {

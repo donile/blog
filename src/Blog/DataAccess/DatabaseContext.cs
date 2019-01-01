@@ -6,9 +6,9 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using markdonile.com;
+using MarkDonile.Blog.Models;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.DataAccess
 {
     public class DatabaseContext : IdentityDbContext<AppUser>
     {

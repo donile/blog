@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using MarkDonile.Blog.Admin.ViewModels;
 using MarkDonile.Blog.Admin.ViewModels.User;
 using System.Linq;
-using markdonile.com;
+using MarkDonile.Blog.Models;
 
 namespace MarkDonile.Blog.Admin.Controllers
 {
@@ -15,15 +17,39 @@ namespace MarkDonile.Blog.Admin.Controllers
         private UserManager<AppUser> _userManager;
         private SignInManager<AppUser> _signInManager;
 
+        public int PageSize { get; set; } = 4;
+
         public UserController(UserManager<AppUser> userManager, SignInManager<AppUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(int pageNumber = 1)
         {
-            return View(_userManager.Users);
+            if (pageNumber < 1) { pageNumber = 1; }
+            if (pageNumber > (_userManager.Users.Count() / PageSize) + 1) { pageNumber = 1; }
+
+            IEnumerable<AppUser> users = _userManager
+                .Users
+                .Skip((pageNumber - 1) * PageSize)
+                .Take(PageSize)
+                .ToList();
+
+            PagingInfo pagingInfo = new PagingInfo
+            {
+                ItemsTotal = _userManager.Users.Count(),
+                ItemsPerPage = PageSize,
+                PageNumber = pageNumber,
+            };
+
+            var viewModel = new UserListViewModel
+            {
+                AppUsers = users,
+                PagingInfo = pagingInfo,
+            };
+
+            return View(viewModel);
         }
 
         public IActionResult Add()

@@ -10,8 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using MarkDonile.Blog.DataAccess;
+using MarkDonile.Blog.Models;
 
-namespace markdonile.com
+namespace MarkDonile.Blog
 {
     public class Startup
     {
@@ -54,6 +56,10 @@ namespace markdonile.com
             app.UseAuthentication();
             app.UseMvc(routes =>
                 {
+                    routes.MapRoute(
+                        name: "areas-pagination",
+                        template: "{area:exists}/{controller}/{action=Index}/Page{pageNumber}");
+
                     routes.MapRoute(
                         name: "areas",
                         template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
