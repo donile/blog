@@ -55,6 +55,10 @@ namespace markdonile.com
             app.UseMvc(routes =>
                 {
                     routes.MapRoute(
+                        name: "areas-pagination",
+                        template: "{area:exists}/{controller}/{action=Index}/Page{pageNumber}");
+
+                    routes.MapRoute(
                         name: "areas",
                         template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 

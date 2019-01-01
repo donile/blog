@@ -1,4 +1,4 @@
-@model IEnumerable<AppUser>
+@model UserListViewModel
 
 <div asp-validation-summary="All"></div>
 
@@ -8,11 +8,11 @@
         <thead>User Name</thead>
         <thead>Email</thead>
     </tr>
-    @if(Model.Count() == 0){
+    @if(Model.AppUsers.Count() == 0){
         <tr><td colspan="3">No user accounts</td></tr>
     }
     else{
-        foreach(AppUser user in Model){
+        foreach(AppUser user in Model.AppUsers){
             <tr>
                 <td>@user.Id</td>
                 <td>@user.UserName</td>
@@ -29,3 +29,5 @@
 </table>
 
 <a class="btn btn-primary" asp-action="Add">Add User</a>
+
+<div page-model="@Model.PagingInfo" page-action="Index"></div>
