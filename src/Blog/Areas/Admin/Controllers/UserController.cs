@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using MarkDonile.Blog.Admin.ViewModels;
 using MarkDonile.Blog.Admin.ViewModels.User;
 using System.Linq;
-using markdonile.com;
+using MarkDonile.Blog.Models;
 
 namespace MarkDonile.Blog.Admin.Controllers
 {

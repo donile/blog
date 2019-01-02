@@ -10,8 +10,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using MarkDonile.Blog.DataAccess;
+using MarkDonile.Blog.Models;
 
-namespace markdonile.com
+namespace MarkDonile.Blog
 {
     public class Startup
     {

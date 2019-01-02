@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using markdonile.com;
+using MarkDonile.Blog.Models;
 
 namespace MarkDonile.Blog.Admin.ViewModels.User{
     public class UserListViewModel{

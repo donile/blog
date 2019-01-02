@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 
-namespace markdonile.com
+namespace MarkDonile.Blog.Models
 {
     public class AppUser : IdentityUser
     {
