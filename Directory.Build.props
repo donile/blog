@@ -1,5 +1,6 @@
 <Project>
  <PropertyGroup>
+   <Configuration Condition=" '$(Configuation)' == '' ">Debug</Configuration>
    <BaseOutputPath>../../artifacts/bin/$(Configuration)/$(MSBuildProjectName)</BaseOutputPath>
    <BaseIntermediateOutputPath>../../artifacts/obj/$(Configuration)/$(MSBuildProjectName)</BaseIntermediateOutputPath>
  </PropertyGroup>
