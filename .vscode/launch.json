@@ -10,7 +10,7 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/artifacts/bin/Debug/netcoreapp2.1/Blog.dll",
+            "program": "${workspaceFolder}/artifacts/bin/Debug/Blog/netcoreapp2.2/Blog.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Blog",
             "stopAtEntry": false,

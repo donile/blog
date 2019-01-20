@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
+using System.Runtime.InteropServices;
 
 namespace MarkDonile.Blog
 {
@@ -75,12 +76,38 @@ namespace MarkDonile.Blog
 
         private string ConnectionString()
         {
+            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
+                return WindowsConnectionString();
+            }
+            else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
+                return LinuxConnectionString();
+            }
+            else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
+                return MacConnectionString();
+            }
+            else{
+                throw new NotImplementedException();
+            }
+        }
+
+        private string LinuxConnectionString()
+        {
             var connectionBuilder = new SqlConnectionStringBuilder();
-            connectionBuilder.ConnectionString = Configuration["Database:ConnectionString"];
+            connectionBuilder.ConnectionString = Configuration["Database:Linux:ConnectionString"];
             connectionBuilder.UserID = Configuration["Database:UserId"];
             connectionBuilder.Password = Configuration["Database:Password"];
 
             return connectionBuilder.ConnectionString;
+        }
+        
+        private string WindowsConnectionString()
+        {
+            return Configuration["Database:Windows:ConnectionString"];
+        }
+
+        private string MacConnectionString()
+        {
+            throw new NotImplementedException();
         }
     }
 }
