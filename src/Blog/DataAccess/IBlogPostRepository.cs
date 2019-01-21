@@ -6,5 +6,7 @@ namespace MarkDonile.Blog.DataAccess
     public interface IBlogPostRepository
     {
         IQueryable<BlogPost> BlogPosts { get; }
+
+        int Add(BlogPost blogPost);
     }
 }

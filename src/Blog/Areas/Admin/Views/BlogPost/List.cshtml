@@ -1,0 +1,31 @@
+@model IEnumerable<BlogPost>
+
+<div class="container-fluid">
+    <div class="row">
+        <table class="table table-striped">
+            <tr>
+                <th>Title</th>
+                <th>Author</th>
+                <th>Publish Date</th>
+                <th></th>
+            </tr>
+            @foreach(BlogPost post in Model)
+            {
+                <tr>
+                    <td>@post.Title</td>
+                    <td>@post.Author</td>
+                    <td>@post.ReleaseDate.ToString("yyyy.MM.dd")</td>
+                </tr>
+            }
+        </table>
+    </div>
+    @if(Model.Count() == 0)
+        {
+            <div class="row">
+                <h1>No BlogPosts</h1>
+            </div>
+        }
+    <div class="row">
+        <a asp-action="Add">Add Post</a>
+    </div>
+</div>

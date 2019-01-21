@@ -35,7 +35,7 @@ namespace MarkDonile.Blog
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
-            services.AddTransient<IBlogPostRepository, FakeBlogPostRespository>();
+            services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
             services.AddMvc();
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Admin/UserAuthorization/SignIn");
         }
