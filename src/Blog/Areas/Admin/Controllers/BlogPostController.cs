@@ -55,6 +55,24 @@ namespace MarkDonile.Blog.Admin.Controllers
             return RedirectToAction( nameof( List ) );
         }
 
+        [HttpPost]
+        public IActionResult Remove( int? id )
+        {
+            if ( !id.HasValue )
+            {
+                return ErrorView( "BlogPost id required to remove." );
+            }
+
+            Result result = _blogPostRepository.Remove( id );
+
+            if ( result.IsError )
+            {
+                return ErrorView( $"Unable to remove post with id {id.Value}" );
+            }
+
+            return RedirectToAction( nameof( List ) );
+        }
+
         private IActionResult ErrorView( string message )
         {
             var viewModel = new ErrorViewModel

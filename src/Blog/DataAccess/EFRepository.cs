@@ -73,8 +73,21 @@ namespace MarkDonile.Blog.DataAccess
         {
             try
             {
-                _dbContext.Remove( keyValues );
+                Result<T> result = Get( keyValues );
+
+                if ( result.IsError )
+                {
+                    return result;
+                }
+
+                if ( result.Value == null )
+                {
+                    return Result.Failure( "Item not found in repository." );
+                }
+
+                _dbContext.Remove( result.Value );
                 _dbContext.SaveChanges();
+                
                 return Result.Ok();
             }
             catch( Exception e )

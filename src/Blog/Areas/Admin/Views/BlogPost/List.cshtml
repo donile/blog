@@ -15,6 +15,15 @@
                     <td>@post.Title</td>
                     <td>@post.Author</td>
                     <td>@post.ReleaseDate.ToString("yyyy.MM.dd")</td>
+                    <!-- <td>
+                        <a class="btn btn-primary" asp-action="Edit" asp-route-id="@post.Id">Edit</a>
+                    </td> -->
+                    <td>
+                        <form method="POST" asp-action="Remove">
+                            <input type="hidden" name="id" value="@post.Id">
+                            <input class="btn btn-danger" type="submit" value="Remove">
+                        </form>
+                    </td>
                 </tr>
             }
         </table>
