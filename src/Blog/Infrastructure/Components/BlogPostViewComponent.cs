@@ -1,6 +1,7 @@
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
 using Microsoft.AspNetCore.Mvc;
+using Results;
 using System.Linq;
 
 namespace MarkDonile.Blog.Infrastructure.ViewComponents
@@ -14,20 +15,9 @@ namespace MarkDonile.Blog.Infrastructure.ViewComponents
             _repository = repository;
         }
 
-        public IViewComponentResult Invoke(int? id)
+        public IViewComponentResult Invoke( BlogPost post )
         {
-            BlogPost blogPost = null;
-
-            if (id.HasValue)
-            {
-                blogPost = _repository.BlogPosts.FirstOrDefault(bp => bp.Id == id);
-            }
-            else
-            {
-                blogPost = _repository.BlogPosts.OrderByDescending(bp => bp.ReleaseDate).FirstOrDefault();
-            }
-
-            return View(blogPost);
+            return View( post );
         }
     }
 }

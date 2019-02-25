@@ -1,7 +1,10 @@
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
+using MarkDonile.Blog.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Results;
+using System.Collections.Generic;
 
 namespace MarkDonile.Blog.Admin.Controllers
 {
@@ -9,15 +12,24 @@ namespace MarkDonile.Blog.Admin.Controllers
     [Area("Admin")]
     public class BlogPostController : Controller
     {
-        private IBlogPostRepository _repository;
-        public BlogPostController(IBlogPostRepository repository)
+        private const string ErrorViewName = "Error";
+        private IBlogPostRepository _blogPostRepository;
+        public BlogPostController(IBlogPostRepository blogPostRepository)
         {
-            _repository = repository;
+            _blogPostRepository = blogPostRepository;
         }
 
         public IActionResult List()
         {
-            return View(_repository.BlogPosts);
+            Result<IEnumerable<BlogPost>> result =
+                _blogPostRepository.GetAll();
+
+            if ( result.IsError )
+            {
+                return ErrorView( result.Message );
+            }
+            
+            return View( result.Value );
         }
 
         public IActionResult Add()
@@ -26,16 +38,31 @@ namespace MarkDonile.Blog.Admin.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(BlogPost blogPost)
+        public IActionResult Add( BlogPost blogPost )
         {
-            if(!ModelState.IsValid)
+            if ( !ModelState.IsValid )
             {
-                return View(nameof(Add), blogPost);
+                return View( nameof( Add ), blogPost );
             }
 
-            _repository.Add(blogPost);
+            Result result = _blogPostRepository.Add( blogPost );
 
-            return RedirectToAction(nameof(List));
+            if ( result.IsError )
+            {
+                return ErrorView( result.Message );
+            }
+
+            return RedirectToAction( nameof( List ) );
+        }
+
+        private IActionResult ErrorView( string message )
+        {
+            var viewModel = new ErrorViewModel
+            {
+                Message = message,
+            };
+
+            return View( ErrorViewName, viewModel );
         }
     }
 }

@@ -24,16 +24,15 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.1.4" /> -->
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Results\Results.csproj" />
+  </ItemGroup>
+
   <!-- Required due to an issue with the dotnet ef CLI tool -->
   <!-- dotnet ef CLI creates file at $(MSBuildProjectDirectory)/obj/ before executing MSBuild -->
   <Target Name="MoveEntityFrameworkCoreTargets">
-    <Move Condition="Exists($(EntityFrameworkCoreTargetsFile))"
-      SourceFiles="$(EntityFrameworkCoreTargetsFile)"
-      DestinationFolder="$(BaseIntermediateOutputPath)"
-    />
-    <RemoveDir
-      Directories="$(MSBuildProjectDirectory)/obj/"
-    />
+    <Move Condition="Exists($(EntityFrameworkCoreTargetsFile))" SourceFiles="$(EntityFrameworkCoreTargetsFile)" DestinationFolder="$(BaseIntermediateOutputPath)" />
+    <RemoveDir Directories="$(MSBuildProjectDirectory)/obj/" />
   </Target>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />

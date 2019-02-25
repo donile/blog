@@ -1,3 +1,10 @@
 @model BlogPost
 
-<h2 class="text-center">@Model.Title</h2>
+@if ( Model != null )
+{
+    <h2 class="text-center">@Model.Title</h2>
+}
+else
+{
+    <h2 class="text-center">Error! Post not found!</h2>
+}
