@@ -1,23 +1,37 @@
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
 using Microsoft.EntityFrameworkCore;
+using Results;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace MarkDonile.Blog.DataAccess
 {
-    public class EFBlogPostRepository : IBlogPostRepository
+    public class EFBlogPostRepository : EFRepository<BlogPost>, IBlogPostRepository
     {
         private DatabaseContext _dbContext;
-        public EFBlogPostRepository(DatabaseContext dbContext)
+
+        public EFBlogPostRepository( DatabaseContext dbContext ) : base( dbContext )
         {
             _dbContext = dbContext;
         }
-        public IQueryable<BlogPost> BlogPosts => _dbContext.BlogPosts;
 
-        public int Add(BlogPost blogPost)
+        public Result<BlogPost> GetNewest()
         {
-            _dbContext.BlogPosts.Add(blogPost);
-            return _dbContext.SaveChanges();
+            try
+            {
+                BlogPost post = 
+                    _dbContext.Set<BlogPost>()
+                        .OrderByDescending( bp => bp.ReleaseDate )
+                        .FirstOrDefault();
+                
+                return Result.Ok<BlogPost>( post );
+            }
+            catch( Exception e )
+            {
+                return Result.Failure<BlogPost>( e.Message );
+            }
         }
     }
 }

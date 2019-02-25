@@ -1,12 +1,11 @@
 using MarkDonile.Blog.Models;
+using Results;
 using System.Linq;
 
 namespace MarkDonile.Blog.DataAccess
 {
-    public interface IBlogPostRepository
+    public interface IBlogPostRepository : IRepository<BlogPost>
     {
-        IQueryable<BlogPost> BlogPosts { get; }
-
-        int Add(BlogPost blogPost);
+        Result<BlogPost> GetNewest();
     }
 }
