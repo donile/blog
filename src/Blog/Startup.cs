@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
@@ -35,6 +36,10 @@ namespace MarkDonile.Blog
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
+            services.AddSpaStaticFiles(options => {
+                options.RootPath = "./wwwroot/dist";
+            });
+
             services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
             services.AddMvc();
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Admin/UserAuthorization/SignIn");
@@ -55,23 +60,14 @@ namespace MarkDonile.Blog
 
             app.UseStaticFiles();
             app.UseAuthentication();
-            app.UseMvc(routes =>
-                {
-                    routes.MapRoute(
-                        name: "areas-pagination",
-                        template: "{area:exists}/{controller}/{action=Index}/Page{pageNumber}");
+            app.UseMvc();
+            app.UseSpaStaticFiles();
+            app.UseSpa(spa => {
+                spa.Options.SourcePath = "./wwwroot/dist";
+                spa.Options.DefaultPage = "/index.html";
+            });
 
-                    routes.MapRoute(
-                        name: "areas",
-                        template: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
-
-                    routes.MapRoute(
-                        name: "default",
-                        template: "{controller=Home}/{action=Index}");
-
-                });
-
-            DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
+            // DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
         }
 
         private string ConnectionString()
@@ -94,8 +90,8 @@ namespace MarkDonile.Blog
         {
             var connectionBuilder = new SqlConnectionStringBuilder();
             connectionBuilder.ConnectionString = Configuration["Database:Linux:ConnectionString"];
-            connectionBuilder.UserID = Configuration["Database:UserId"];
-            connectionBuilder.Password = Configuration["Database:Password"];
+            connectionBuilder.UserID = Configuration["Database:Linux:UserId"];
+            connectionBuilder.Password = Configuration["Database:Linux:Password"];
 
             return connectionBuilder.ConnectionString;
         }
