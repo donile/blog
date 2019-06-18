@@ -32,7 +32,9 @@ namespace MarkDonile.Blog
         {
             string connection = ConnectionString();
 
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connection));
+            services.AddEntityFrameworkNpgsql()
+                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection))
+                .BuildServiceProvider();
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
