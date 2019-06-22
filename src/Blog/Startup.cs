@@ -30,11 +30,10 @@ namespace MarkDonile.Blog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = PostgreSqlConnectionString();
+            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Blog;Trusted_Connection=True;MultipleActiveResultSets=true";
             Console.WriteLine($"Using database connection string: {connectionString}");
 
-            services.AddEntityFrameworkNpgsql()
-                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString))
+            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString))
                 .BuildServiceProvider();
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
