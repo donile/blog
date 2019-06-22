@@ -30,10 +30,11 @@ namespace MarkDonile.Blog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = ConnectionString();
+            string connectionString = PostgreSqlConnectionString();
+            Console.WriteLine($"Using database connection string: {connectionString}");
 
             services.AddEntityFrameworkNpgsql()
-                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connection))
+                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString))
                 .BuildServiceProvider();
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
@@ -69,10 +70,10 @@ namespace MarkDonile.Blog
                 spa.Options.DefaultPage = "/index.html";
             });
 
-            // DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
+            DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
         }
 
-        private string ConnectionString()
+        private string MsSqlServerConnectionString()
         {
             if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
                 return WindowsConnectionString();
@@ -106,6 +107,33 @@ namespace MarkDonile.Blog
         private string MacConnectionString()
         {
             throw new NotImplementedException();
+        }
+
+        private string PostgreSqlConnectionString()
+        {
+            string userId = Configuration["Database:PostgreSQL:UserId"];
+            string password = Configuration["Database:PostgreSQL:Password"];
+            string host = Configuration["Database:PostgreSQL:Host"];
+            string port = Configuration["Database:PostgreSQL:Port"];
+            string databaseName = Configuration["Database:PostgreSQL:Name"];
+
+            string connectionString = $"User ID={userId}; Password={password}; Host={host}; Port={port}; Database={databaseName};";
+
+            return connectionString;
+        }
+
+        private string ConnectionString()
+        {
+            string databaseType = Configuration["Database:Type"];
+
+            switch (databaseType)
+            {
+                case "PostgreSQL":
+                    return PostgreSqlConnectionString();
+                
+                default:
+                    throw new Exception($"Unknown database type: {databaseType}");
+            }
         }
     }
 }
