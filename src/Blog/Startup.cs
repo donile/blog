@@ -30,7 +30,7 @@ namespace MarkDonile.Blog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = "Server=(localdb)\\MSSQLLocalDB;Database=Blog;Trusted_Connection=True;MultipleActiveResultSets=true";
+            string connectionString = ConnectionString();
             Console.WriteLine($"Using database connection string: {connectionString}");
 
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString))
@@ -123,16 +123,20 @@ namespace MarkDonile.Blog
 
         private string ConnectionString()
         {
-            string databaseType = Configuration["Database:Type"];
+            string environment = Configuration["ASPNETCORE_ENVIRONMENT"];
+            Console.WriteLine($"Using ASPNETCORE_ENVIRONMENT: {environment}");
 
-            switch (databaseType)
+            if (environment == "Development")
             {
-                case "PostgreSQL":
-                    return PostgreSqlConnectionString();
-                
-                default:
-                    throw new Exception($"Unknown database type: {databaseType}");
+                return Configuration["Database:MSSQLServer:Windows:ConnectionString"];
             }
+            
+            if (environment == "Production")
+            {
+                return Configuration["Database:MSSQLServer:Azure:ConnectionString"];
+            }
+
+            throw new Exception($"Invalid environment: {environment}");
         }
     }
 }
