@@ -1,4 +1,4 @@
-<Project InitialTargets="MoveEntityFrameworkCoreTargets">
+<Project InitialTargets="MoveEntityFrameworkCoreTargets;BuildVueApp">
 
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
 
@@ -35,6 +35,13 @@
   <Target Name="MoveEntityFrameworkCoreTargets">
     <Move Condition="Exists($(EntityFrameworkCoreTargetsFile))" SourceFiles="$(EntityFrameworkCoreTargetsFile)" DestinationFolder="$(BaseIntermediateOutputPath)" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)/obj/" />
+  </Target>
+
+  <Target Name="BuildVueApp" Condition="'$(ASPNETCORE_ENVIRONMENT)' == 'Production'">
+    <Message Text="Installing Vue app dependencies." Importance="high" />
+    <Exec Command="npm install" WorkingDirectory="./ClientApp" />
+    <Message Text="Building Vue app." Importance="high" />
+    <Exec Command="npm run build" WorkingDirectory="./ClientApp" />
   </Target>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />
