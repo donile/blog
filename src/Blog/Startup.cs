@@ -33,6 +33,7 @@ namespace MarkDonile.Blog
             string connectionString = ConnectionString();
             Console.WriteLine($"Using database connection string: {connectionString}");
 
+            services.AddApplicationInsightsTelemetry();
             services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString))
                 .BuildServiceProvider();
             services.AddIdentity<AppUser, IdentityRole>()
