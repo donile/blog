@@ -30,12 +30,13 @@ namespace MarkDonile.Blog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = ConnectionString();
+            string connectionString = PostgreSqlConnectionString();
             Console.WriteLine($"Using database connection string: {connectionString}");
 
             services.AddApplicationInsightsTelemetry();
-            services.AddDbContext<DatabaseContext>(options => options.UseSqlServer(connectionString))
-                .BuildServiceProvider();
+            services.AddEntityFrameworkNpgsql()
+               .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString))
+               .BuildServiceProvider();
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
