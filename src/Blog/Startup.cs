@@ -33,19 +33,22 @@ namespace MarkDonile.Blog
             string connectionString = PostgreSqlConnectionString();
             Console.WriteLine($"Using database connection string: {connectionString}");
 
-            services.AddApplicationInsightsTelemetry();
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString))
                .BuildServiceProvider();
+
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
                 .AddDefaultTokenProviders();
+
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "./wwwroot/dist";
             });
 
             services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
+
             services.AddMvc();
+
             services.ConfigureApplicationCookie(options => options.LoginPath = "/Admin/UserAuthorization/SignIn");
         }
 
