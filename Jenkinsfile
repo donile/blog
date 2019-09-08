@@ -15,6 +15,13 @@ pipeline {
         stage('Deploy') {
             steps {
                 echo 'Deploying....'
+                withCredentials([
+                    sshUserPrivateKey(
+                        credentialsId: 'deployer', 
+                        keyFileVariable: 'DEPLOYER_SSH_PRIVATE_KEY', 
+                        usernameVariable: 'DEPLOYER_USERNAME')]) {
+                            sh 'build/deploy.sh'
+                        }
             }
         }
     }
