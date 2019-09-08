@@ -1,8 +1,9 @@
 echo "Start deploying ..."
 
-ssh -l $DEPLOYER_USERNAME -i $DEPLOYER_SSH_PRIVATE_KEY markdonile.com
-
-touch /home/deployer/jenkins-pipeline-created-file
+ssh -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY" markdonile.com << HERE
+    touch "/home/deployer/jenkins-pipeline-created-file"
+    logout
+HERE
 
 echo "Start publishing .NET Core project ..."
 
