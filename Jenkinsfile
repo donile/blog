@@ -20,7 +20,7 @@ pipeline {
                         credentialsId: 'deployer', 
                         keyFileVariable: 'DEPLOYER_SSH_PRIVATE_KEY', 
                         usernameVariable: 'DEPLOYER_USERNAME')]) {
-                            sh 'build/deploy.sh'
+                            sh './build/deploy.sh'
                         }
             }
         }
