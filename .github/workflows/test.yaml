@@ -1,0 +1,13 @@
+name: test
+on:
+  push:
+    branches: master
+runs-on: ubuntu-18.04
+
+jobs:
+  build:
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        fetch-depth: 1
+      run: echo Hello, Mark Donile!
