@@ -1,13 +1,17 @@
 name: test
+
 on:
   push:
     branches: master
-runs-on: ubuntu-18.04
 
 jobs:
-  build:
+  job1:
+    name: job1
+    runs-on: ubuntu-18.04
     steps:
-    - uses: actions/checkout@v1
+    - name: checkout repo
+      uses: actions/checkout@v1
       with:
         fetch-depth: 1
+    - name: echo Hello, World
       run: echo Hello, Mark Donile!
