@@ -13,5 +13,13 @@ jobs:
       uses: actions/checkout@v1
       with:
         fetch-depth: 1
-    - name: echo Hello, World
-      run: echo Hello, Mark Donile!
+    - name: install node
+      uses: actions/setup-node@v1
+      with:
+        node-version: '12.8.0'
+    - name: install dotnet
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '2.2.402'
+    - name: execute build script
+      run: ./build/build.sh
