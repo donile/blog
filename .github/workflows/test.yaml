@@ -30,6 +30,7 @@ jobs:
         path: artifacts
   test:
     needs: [build]
+    runs-on: ubuntu-18.04
     steps:
       - name: download build artifact(s)
         uses: actions/download-artifact@v1
