@@ -25,9 +25,9 @@ jobs:
       run: ./build/build.sh
     - name: upload build artifact(s)
       uses: actions/upload-artifact@v1
-        with:
-          name: artifacts
-          path: artifacts
+      with:
+        name: artifacts
+        path: artifacts
   test:
     needs: [build]
     steps:
