@@ -1,12 +1,12 @@
-name: test
+name: continuous-integration
 
 on:
   push:
     branches: master
 
 jobs:
-  job1:
-    name: job1
+  build:
+    name: build
     runs-on: ubuntu-18.04
     steps:
     - name: checkout repo
