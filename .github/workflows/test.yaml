@@ -23,3 +23,17 @@ jobs:
         dotnet-version: '2.2.402'
     - name: execute build script
       run: ./build/build.sh
+    - name: upload build artifact(s)
+      uses: actions/upload-artifact@v1
+      with:
+        name: artifacts
+        path: artifacts
+  test:
+    needs: [build]
+    steps:
+      - name: download build artifact(s)
+        uses: actions/download-artifact@v1
+        with:
+          name: artifacts
+      - name: list artifacts
+        run: ls -lahR ./artifacts
