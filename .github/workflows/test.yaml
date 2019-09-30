@@ -6,7 +6,6 @@ on:
 
 jobs:
   build:
-    name: build
     runs-on: ubuntu-18.04
     steps:
     - name: checkout repo
@@ -28,6 +27,7 @@ jobs:
       with:
         name: artifacts
         path: ./artifacts
+
   test:
     needs: [build]
     runs-on: ubuntu-18.04
@@ -36,5 +36,22 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: artifacts
-      - name: list artifacts
-        run: ls -lahR ./artifacts
+
+  deploy:
+    needs: [build, test]
+    runs-on: ubuntu-18.04
+    steps:
+      - name: install dotnet
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '2.2.402'
+      - name: download build artifact(s)
+        uses: actions/download-artifact@v1
+        with:
+          name: artifacts
+      - name: set environment variables
+        env:
+          DEPLOYER_SSH_PRIVATE_KEY: ${{ secrets.DEPLOYER_SSH_PRIVATE_KEY }}
+          DEPLOYER_USERNAME: ${{ secrets.DEPLOYER_USERNAME }}
+      - name: deploy app
+        run: ./build/deploy.sh
