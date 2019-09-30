@@ -46,9 +46,9 @@ jobs:
         with:
           dotnet-version: '2.2.402'
       - name: checkout repo
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+        uses: actions/checkout@v1
+        with:
+          fetch-depth: 1
       - name: download build artifact(s)
         uses: actions/download-artifact@v1
         with:
