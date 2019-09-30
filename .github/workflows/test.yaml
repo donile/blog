@@ -49,9 +49,8 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: artifacts
-      - name: set environment variables
+      - name: deploy app
         env:
           DEPLOYER_SSH_PRIVATE_KEY: ${{ secrets.DEPLOYER_SSH_PRIVATE_KEY }}
           DEPLOYER_USERNAME: ${{ secrets.DEPLOYER_USERNAME }}
-      - name: deploy app
         run: ./build/deploy.sh
