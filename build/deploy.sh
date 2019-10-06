@@ -23,7 +23,7 @@ END_TEXT
 chmod 600 "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH"
 
 # Add production server's fingerprint to known_hosts file
-ssh-keyscan markdonile.com >> ~/.ssh/known_hosts
+ssh-keyscan markdonile.com >> /etc/ssh/known_hosts
 
 scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./artifacts/bin/Release/Blog/netcoreapp2.2/publish/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
 
