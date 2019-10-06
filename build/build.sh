@@ -17,7 +17,7 @@ echo "Finished installing ClientApp JavaScript packages ..."
 
 echo "Start restoring .NET Core NuGet packages ..."
 
-dotnet restore ./src/Blog/Blog.csproj --source "$nuget_source"
+dotnet restore ./src/Blog/Blog.csproj --source "$nuget_source" /property:Configuration=Release
 
 echo "Finished restoring .NET Core NuGet packages ..."
 
