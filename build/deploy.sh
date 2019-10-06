@@ -24,13 +24,13 @@ chmod 600 "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH"
 
 # Setup ~/.ssh directory
 if [ ! -d "$HOME/.ssh" ]; then
-  debug "$HOME/.ssh does not exists, creating it"
+  echo "$HOME/.ssh does not exists, creating it"
   mkdir -p "$HOME/.ssh"
 fi
 
 # Setup known_hosts file
 if [ ! -f "$HOME/.ssh/known_hosts" ]; then
-  debug "$HOME/.ssh/known_hosts does not exist, creating it"
+  echo "$HOME/.ssh/known_hosts does not exist, creating it"
   touch "$HOME/.ssh/known_hosts"
   chmod 644 "$HOME/.ssh/known_hosts"
 fi
@@ -54,7 +54,7 @@ echo "Finished deploying .NET Core project ..."
 
 echo "Start deleting ./temp directory and it's contents..."
 
-# rm -r ./temp
+rm -r ./temp
 
 echo "Finished deleting ./temp directory and it's contents..."
 
