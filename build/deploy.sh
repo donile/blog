@@ -22,11 +22,26 @@ END_TEXT
 # 'ssh' commands that follow
 chmod 600 "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH"
 
-# Add production server's fingerprint to known_hosts file
-ssh-keyscan markdonile.com >> /etc/ssh/known_hosts
+# Setup ~/.ssh directory
+if [ ! -d "$HOME/.ssh" ]; then
+  debug "$HOME/.ssh does not exists, creating it"
+  mkdir -p "$HOME/.ssh"
+fi
 
+# Setup known_hosts file
+if [ ! -f "$HOME/.ssh/known_hosts" ]; then
+  debug "$HOME/.ssh/known_hosts does not exist, creating it"
+  touch "$HOME/.ssh/known_hosts"
+  chmod 644 "$HOME/.ssh/known_hosts"
+fi
+
+# Add production server's fingerprint to known_hosts file
+ssh-keyscan markdonile.com >> ~/.ssh/known_hosts
+
+# Copy web app to production server
 scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./artifacts/bin/Release/Blog/netcoreapp2.2/publish/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
 
+# Deploy web app on production server
 ssh -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com << HERE
     sudo systemctl stop kestrel.markdonile.com.service
     rm -r /var/www/markdonile.com/*
