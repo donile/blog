@@ -22,6 +22,9 @@ END_TEXT
 # 'ssh' commands that follow
 chmod 600 "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH"
 
+# Add production server's fingerprint to known_hosts file
+ssh-keyscan markdonile.com >> ~/.ssh/known_hosts
+
 scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./artifacts/bin/Release/Blog/netcoreapp2.2/publish/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
 
 ssh -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com << HERE
@@ -36,7 +39,7 @@ echo "Finished deploying .NET Core project ..."
 
 echo "Start deleting ./temp directory and it's contents..."
 
-rm -r ./temp
+# rm -r ./temp
 
 echo "Finished deleting ./temp directory and it's contents..."
 
