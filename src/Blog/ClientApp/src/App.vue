@@ -1,28 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4 offset-4">
+          <h1 class="text-center">markdonile.com</h1>
+        </div>
+      </div>
+    </div>
+
+    <home-page/>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-4 offset-4">
+          <span>
+            <p class="text-center">
+            <a asp-controller="About">about</a>
+            ::
+            <a asp-controller="Archives">archives</a>
+            </p>
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HomePage from './components/HomePage.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    'home-page': HomePage
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
