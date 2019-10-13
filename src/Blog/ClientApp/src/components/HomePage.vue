@@ -2,14 +2,37 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-4 offset-4">
-                <p class="text-center">Future home of BlogPost.Vue</p>
+            <h1 class="text-center">markdonile.com</h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 offset-4">
+                <blog-post/>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-4 offset-4">
+            <span>
+                <p class="text-center">
+                <a asp-controller="About">about</a>
+                ::
+                <a asp-controller="Archives">archives</a>
+                </p>
+            </span>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import BlogPost from './BlogPost';
+
 export default {
     name: 'HomePage',
+    components: {
+        'blog-post': BlogPost
+    }
 }
 </script>
