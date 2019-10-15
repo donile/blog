@@ -39,7 +39,7 @@ ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonil
 ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com "mkdir /home/$DEPLOYER_USERNAME/markdonile.com"
 
 # Copy web app to temporary directory on production server
-scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./artifacts/bin/Release/Blog/netcoreapp2.2/publish/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
+scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./published-app/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
 
 # Deploy web app on production server
 ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com << HERE
