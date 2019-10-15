@@ -35,11 +35,14 @@ ssh-keyscan markdonile.com >> ~/.ssh/known_hosts
 # Clean directory on production server that temporarily holds app files
 ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com "rm -r /home/$DEPLOYER_USERNAME/markdonile.com"
 
-# Copy web app to production server
+# Create directory on production server to temporarily hold app files
+ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com "mkdir /home/$DEPLOYER_USERNAME/markdonile.com"
+
+# Copy web app to temporary directory on production server
 scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./artifacts/bin/Release/Blog/netcoreapp2.2/publish/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
 
 # Deploy web app on production server
-ssh -t -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com << HERE
+ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com << HERE
     sudo systemctl stop kestrel.markdonile.com.service
     rm -r /var/www/markdonile.com/*
     cp -r /home/deployer/markdonile.com/. /var/www/markdonile.com/
