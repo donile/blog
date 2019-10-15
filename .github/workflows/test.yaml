@@ -51,6 +51,7 @@ jobs:
         uses: actions/download-artifact@v1
         with:
           name: published-app
+          path: artifacts/bin/Release/Blog/netcoreapp2.2/publish
       - name: deploy app
         env:
           DEPLOYER_SSH_PRIVATE_KEY: ${{ secrets.DEPLOYER_SSH_PRIVATE_KEY }}
