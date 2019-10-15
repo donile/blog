@@ -25,17 +25,15 @@ jobs:
     - name: upload build artifact(s)
       uses: actions/upload-artifact@v1
       with:
-        name: artifacts
-        path: ./artifacts
+        name: published-app
+        path: ./artifacts/bin/Release/netcoreapp2.2/publish
 
   test:
     needs: [build]
     runs-on: ubuntu-18.04
     steps:
-      - name: download build artifact(s)
-        uses: actions/download-artifact@v1
-        with:
-          name: artifacts
+      - name: download artifacts
+        run: echo "Please configure test stage in GitHub workflow file"
 
   deploy:
     needs: [build, test]
@@ -52,7 +50,7 @@ jobs:
       - name: download build artifact(s)
         uses: actions/download-artifact@v1
         with:
-          name: artifacts
+          name: published-app
       - name: deploy app
         env:
           DEPLOYER_SSH_PRIVATE_KEY: ${{ secrets.DEPLOYER_SSH_PRIVATE_KEY }}
