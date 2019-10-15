@@ -39,4 +39,10 @@ dotnet build ./src/Blog/Blog.csproj --no-restore --configuration "$configuration
 
 echo "Finished building .NET Core project ..."
 
+echo "Start publishing .NET Core project ..."
+
+dotnet publish ./src/Blog/Blog.csproj --no-restore --no-build --configuration Release
+
+echo "Finished publishing .NET Core project ..."
+
 echo "Finished building ..."

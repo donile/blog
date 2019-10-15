@@ -1,11 +1,5 @@
 echo "Start deploying ..."
 
-echo "Start publishing .NET Core project ..."
-
-dotnet publish ./src/Blog/Blog.csproj --no-restore --no-build --configuration Release
-
-echo "Finished publishing .NET Core project ..."
-
 echo "Start deploying .NET Core project ..."
 
 # Create temp directory to hold SSH Private Key(s)
@@ -37,6 +31,9 @@ fi
 
 # Add production server's fingerprint to known_hosts file
 ssh-keyscan markdonile.com >> ~/.ssh/known_hosts
+
+# Clean directory on production server that temporarily holds app files
+ssh -tt -l $DEPLOYER_USERNAME -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" markdonile.com "rm -r /home/$DEPLOYER_USERNAME/markdonile.com"
 
 # Copy web app to production server
 scp -i "$DEPLOYER_SSH_PRIVATE_KEY_FILE_PATH" -r ./artifacts/bin/Release/Blog/netcoreapp2.2/publish/* $DEPLOYER_USERNAME@markdonile.com:/home/$DEPLOYER_USERNAME/markdonile.com
