@@ -26,7 +26,7 @@ jobs:
       uses: actions/upload-artifact@v1
       with:
         name: published-app
-        path: ./artifacts/bin/Release/netcoreapp2.2/publish
+        path: ./artifacts/bin/Release/Blog/netcoreapp2.2/publish
 
   test:
     needs: [build]
