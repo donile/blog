@@ -31,11 +31,15 @@ namespace MarkDonile.Blog
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = PostgreSqlConnectionString();
+            string connectionString = AppDbConnectionString();
             Console.WriteLine($"Using database connection string: {connectionString}");
+
+            string identityConnectionString = AppIdentityDbConnectionString();
+            Console.WriteLine($"Using database connection string: {identityConnectionString}");
 
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString))
+               .AddDbContext<AppIdentityDbContext>(options => options.UseNpgsql(identityConnectionString))
                .BuildServiceProvider();
 
             services.AddIdentity<AppUser, IdentityRole>()
@@ -79,7 +83,7 @@ namespace MarkDonile.Blog
                 spa.Options.DefaultPage = "/index.html";
             });
 
-            DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
+            AppIdentityDbContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
         }
 
         private string MsSqlServerConnectionString()
@@ -118,17 +122,45 @@ namespace MarkDonile.Blog
             throw new NotImplementedException();
         }
 
-        private string PostgreSqlConnectionString()
+        private string PostgreSqlConnectionString(string userId, string password, string host, string port, string databaseName)
         {
-            string userId = Configuration["Database:PostgreSQL:UserId"];
-            string password = Configuration["Database:PostgreSQL:Password"];
-            string host = Configuration["Database:PostgreSQL:Host"];
-            string port = Configuration["Database:PostgreSQL:Port"];
+            return $"User ID={userId}; Password={password}; Host={host}; Port={port}; Database={databaseName};";
+        }
+
+        private string AppDbConnectionString()
+        {
+            string userId = Configuration["Database:AppDatabase:UserId"];
+            string password = Configuration["Database:AppDatabase:Password"];
+            string host = Configuration["Database:AppDatabase:Host"];
+            string port = Configuration["Database:AppDatabase:Port"];
+            string databaseName = Configuration["Database:AppDatabase:Name"];
+            
+            string databaseType = Configuration["Database:Type"];
+
+            if(databaseType == "PostgreSQL")
+            {
+                return PostgreSqlConnectionString(userId, password, host, port, databaseName);
+            }         
+
+            throw new Exception($"Unknown {nameof(databaseType)}: {databaseType}");
+        }
+
+        private string AppIdentityDbConnectionString()
+        {
+            string userId = Configuration["Database:AppIdentityDatabase:UserId"];
+            string password = Configuration["Database:AppIdentityDatabase:Password"];
+            string host = Configuration["Database:AppIdentityDatabase:Host"];
+            string port = Configuration["Database:AppIdentityDatabase:Port"];
             string databaseName = Configuration["Database:PostgreSQL:Name"];
+            
+            string databaseType = Configuration["Database:Type"];
 
-            string connectionString = $"User ID={userId}; Password={password}; Host={host}; Port={port}; Database={databaseName};";
+            if(databaseType == "PostgreSQL")
+            {
+                return PostgreSqlConnectionString(userId, password, host, port, databaseName);
+            }         
 
-            return connectionString;
+            throw new Exception($"Unknown {nameof(databaseType)}: {databaseType}");
         }
 
         private string ConnectionString()
