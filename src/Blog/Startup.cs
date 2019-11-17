@@ -54,7 +54,19 @@ namespace MarkDonile.Blog
 
             services.AddMvc();
 
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Admin/UserAuthorization/SignIn");
+            services.ConfigureApplicationCookie(options => options.Events
+                = new Microsoft.AspNetCore.Authentication.Cookies.CookieAuthenticationEvents{
+                    OnRedirectToLogin = context => {
+                        if (context.Request.Path.StartsWithSegments("/api")
+                            && context.Response.StatusCode == 200) {
+                                context.Response.StatusCode = 401;
+                            }
+                        else {
+                            context.Response.Redirect(context.RedirectUri);
+                        }
+                        return Task.FromResult<object>(null);
+                    }
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -74,7 +86,6 @@ namespace MarkDonile.Blog
                 });
             }
 
-            app.UseStaticFiles();
             app.UseAuthentication();
             app.UseMvc();
             app.UseSpaStaticFiles();
