@@ -1,20 +1,29 @@
 <template>
-    <h1>AdminHome.vue</h1>
+    <div>
+        <h1>AdminHome.vue</h1>
+        <ul>
+            <li>Blog Posts</li>
+        </ul>
+    </div>
 </template>
 
 <script>
+import AuthenticationService from '../services/authentication.js';
+
 export default {
     name: "AdminHome",
     async beforeRouteEnter(to, from, next){
-        let authenticated = false;
+        
+        const authService = new AuthenticationService();
+
+        const authenticated = authService.isAuthenticated();
         
         if(!authenticated){
-
             next( { name: 'UserSignIn' } );
-
         }
-        
-        next( );
+        else{
+            next( );
+        }
     }
 }
 </script>

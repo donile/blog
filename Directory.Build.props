@@ -1,8 +1,11 @@
 <Project>
  <PropertyGroup>
    <Configuration Condition=" '$(Configuation)' == '' ">Debug</Configuration>
-   <BaseOutputPath>../../artifacts/bin/$(Configuration)/$(MSBuildProjectName)</BaseOutputPath>
-   <BaseIntermediateOutputPath>../../artifacts/obj/$(Configuration)/$(MSBuildProjectName)</BaseIntermediateOutputPath>
-   <RestorePackagesPath>../../artifacts/packages</RestorePackagesPath>
+   <RepositoryRootPathCharCount>$(MSBuildThisFileDirectory.Length)</RepositoryRootPathCharCount>
+   <RepositoryRootPathCharLastIndex>$([MSBuild]::Subtract($(RepositoryRootPathCharCount), 1))</RepositoryRootPathCharLastIndex>
+   <RepositoryRoot>$(MSBuildThisFileDirectory.Remove($(RepositoryRootPathCharLastIndex)))</RepositoryRoot>
+   <RestorePackagesPath>$(RepositoryRoot)/artifacts/packages</RestorePackagesPath>
+   <BaseOutputPath>$(RepositoryRoot)/artifacts/bin/$(Configuration)/$(MSBuildProjectName)</BaseOutputPath>
+   <BaseIntermediateOutputPath>$(RepositoryRoot)/artifacts/obj/$(Configuration)/$(MSBuildProjectName)</BaseIntermediateOutputPath>
  </PropertyGroup>
 </Project>

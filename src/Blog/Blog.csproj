@@ -1,4 +1,5 @@
-<Project InitialTargets="MoveEntityFrameworkCoreTargets;BuildVueApp">
+<Project InitialTargets="MoveEntityFrameworkCoreTargets">
+<!-- <Project InitialTargets="BuildVueApp"> -->
 
   <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk.Web" />
 
@@ -8,6 +9,7 @@
     <UserSecretsId>07e2090a-0e7f-4f39-ade1-a5f78be4fea8</UserSecretsId>
     <OutputPath>$(BaseOutputPath)</OutputPath>
     <IntermediateOutputPath>$(BaseIntermediateOutputPath)</IntermediateOutputPath>
+    <MSBuildProjectExtensionsPath>$(BaseIntermediateOutputPath)</MSBuildProjectExtensionsPath>
   </PropertyGroup>
 
   <!-- This is the file produced by the dotnet ef CLI -->
@@ -22,7 +24,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" />
-    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.2.0"/>
+    <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="2.2.0" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
   </ItemGroup>
 
@@ -33,6 +35,8 @@
   <!-- Required due to an issue with the dotnet ef CLI tool -->
   <!-- dotnet ef CLI creates file at $(MSBuildProjectDirectory)/obj/ before executing MSBuild -->
   <Target Name="MoveEntityFrameworkCoreTargets">
+    <Message Text="EntityFrameworkCoreTargetsFile: $(EntityFrameworkCoreTargetsFile)" Importance="high" />
+    <Message Text="BaseIntermediateOutputPath: $(BaseIntermediateOutputPath)" Importance="high" />
     <Move Condition="Exists($(EntityFrameworkCoreTargetsFile))" SourceFiles="$(EntityFrameworkCoreTargetsFile)" DestinationFolder="$(BaseIntermediateOutputPath)" />
     <RemoveDir Directories="$(MSBuildProjectDirectory)/obj/" />
   </Target>
@@ -42,6 +46,12 @@
     <Exec Command="npm install" WorkingDirectory="./ClientApp" />
     <Message Text="Building Vue app." Importance="high" />
     <Exec Command="npm run build" WorkingDirectory="./ClientApp" />
+  </Target>
+
+  <Target Name="EchoRepositoryRootVariable" AfterTargets="build">
+    <Message Text="RepositoryRootPathCharLastIndex varabile: $(RepositoryRootPathCharLastIndex)" Importance="high" />
+    <Message Text="RepositoryRoot variable: $(RepositoryRoot)" Importance="high" />
+    <Message Text="RestorePackagesPath: $(RestorePackagesPath)" Importance="high" />
   </Target>
 
   <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk.Web" />

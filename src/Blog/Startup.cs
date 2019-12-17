@@ -66,7 +66,18 @@ namespace MarkDonile.Blog
                         }
                         return Task.FromResult<object>(null);
                     }
+                }
+            );
+
+            services.AddCors(corsOptions => {
+                corsOptions.AddPolicy("DevelopmentOrigins", policyBuilder => {
+                    policyBuilder
+                        .WithOrigins("http://localhost:8080")
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
                 });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -76,6 +87,7 @@ namespace MarkDonile.Blog
             {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
+                app.UseCors("DevelopmentOrigins");
             }
             else
             {
@@ -162,7 +174,7 @@ namespace MarkDonile.Blog
             string password = Configuration["Database:AppIdentityDatabase:Password"];
             string host = Configuration["Database:AppIdentityDatabase:Host"];
             string port = Configuration["Database:AppIdentityDatabase:Port"];
-            string databaseName = Configuration["Database:PostgreSQL:Name"];
+            string databaseName = Configuration["Database:AppIdentityDatabase:Name"];
             
             string databaseType = Configuration["Database:Type"];
 

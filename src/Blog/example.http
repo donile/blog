@@ -1,0 +1,30 @@
+GET https://www.markdonile.com
+
+###
+POST http://localhost:5000/api/sign-in
+Content-Type: application/json
+
+{
+    "username": "Admin",
+    "password": "Secret123$"
+}
+
+###
+POST http://localhost:5000/api/sign-in
+Content-Type: application/json
+
+{
+    "username": "Admin"
+}
+
+###
+POST http://localhost:5000/api/sign-in
+Content-Type: application/json
+
+{
+    "username": "Admin",
+    "password": "WrongPassword"
+}
+
+###
+POST http://localhost:5000/api/sign-out
