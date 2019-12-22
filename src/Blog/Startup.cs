@@ -43,7 +43,7 @@ namespace MarkDonile.Blog
                .BuildServiceProvider();
 
             services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<DatabaseContext>()
+                .AddEntityFrameworkStores<AppIdentityDbContext>()
                 .AddDefaultTokenProviders();
 
             services.AddSpaStaticFiles(options => {
