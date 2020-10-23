@@ -1,11 +1,11 @@
 using System;
-using Xunit;
+using NUnit.Framework;
 
 namespace Blog.Tests
 {
     public class UnitTest1
     {
-        [Fact]
+        [Test]
         public void Test1()
         {
 
