@@ -1,6 +1,5 @@
 using MarkDonile.Blog.DataAccess;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 
 namespace MarkDonile.Blog.Controllers
 {
@@ -16,6 +15,19 @@ namespace MarkDonile.Blog.Controllers
         public ViewResult List()
         {
             return View();
+        }
+
+        [HttpGet("blog-posts/{id}")]
+        public IActionResult GetBlogPost(int id)
+        {
+            var blogPost = _repository.GetBlogPost(id);
+
+            if (blogPost is null)
+            {
+                return NotFound();
+            }
+            
+            return Ok();
         }
     }
 }

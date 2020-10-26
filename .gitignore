@@ -469,3 +469,7 @@ ASALocalRun/
 
 # Sqlite Database files
 *.db
+
+# Test coverage report produced by ReportGenerator
+**/coveragereport
+**/coveragereport/*
