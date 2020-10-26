@@ -33,5 +33,10 @@ namespace MarkDonile.Blog.DataAccess
                 return Result.Failure<BlogPost>( e.Message );
             }
         }
+
+        public BlogPost GetBlogPost(int id)
+        {
+            return _dbContext.BlogPosts.Find(id);
+        }
     }
 }
