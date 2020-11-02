@@ -20,7 +20,7 @@ namespace MarkDonile.Blog.Controllers
         [HttpGet("blog-posts/{id}")]
         public IActionResult GetBlogPost(int id)
         {
-            var blogPost = _repository.GetBlogPost(id);
+            var blogPost = _repository.Get(id);
 
             if (blogPost is null)
             {
