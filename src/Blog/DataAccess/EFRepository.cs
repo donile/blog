@@ -1,113 +1,61 @@
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using Results;
 
 namespace MarkDonile.Blog.DataAccess
 {
     public class EFRepository<T> : IRepository<T> where T : class
     {
-        private DbContext _dbContext;
+        protected DbContext _dbContext;
         
-        public EFRepository ( DbContext dbContext )
+        public EFRepository (DbContext dbContext)
         {
             _dbContext = dbContext;
         }
 
-        public Result Add( T item )
+        public void Add(T item)
         {
-            try
-            {
-                _dbContext.Set<T>().Add( item );
-                _dbContext.SaveChanges();
-                return Result.Ok();
-            }
-            catch( Exception e )
-            {
-                return Result.Failure( e.Message );
-            }
+            _dbContext.Set<T>().Add(item);
+            _dbContext.SaveChanges();
         }
 
-        public Result Add( IEnumerable<T> items )
+        public void Add(IEnumerable<T> items)
         {
-            try
-            {
-                _dbContext.Set<T>().AddRange( items );
-                _dbContext.SaveChanges();
-                return Result.Ok();
-            }
-            catch( Exception e )
-            {
-                return Result.Failure( e.Message );
-            }
+            _dbContext.Set<T>().AddRange(items);
+            _dbContext.SaveChanges();
         }
 
-        public Result<T> Get( params object[] keyValues )
+        public T Get(params object[] keyValues)
         {
-            try
-            {
-                T item = _dbContext.Set<T>().Find( keyValues );
-                return Result.Ok<T>( item );
-            }
-            catch( Exception e )
-            {
-                return Result.Failure<T>( e.Message );
-            }
+            return _dbContext.Set<T>().Find(keyValues);
         }
 
-        public Result<IEnumerable<T>> GetAll()
+        public IEnumerable<T> GetAll()
         {
-            try
-            {
-                IEnumerable<T> items = _dbContext.Set<T>().ToList();
-                return Result<IEnumerable<T>>.Ok( items );
-            }
-            catch( Exception e )
-            {
-                return Result.Failure<IEnumerable<T>>( e.Message );
-            }
+            return _dbContext.Set<T>().ToList();
         }
 
-        public Result Remove(params object[] keyValues)
+        public void Remove(params object[] keyValues)
         {
-            try
+            T item = Get(keyValues);
+
+            if (item is null)
             {
-                Result<T> result = Get( keyValues );
-
-                if ( result.IsError )
-                {
-                    return result;
-                }
-
-                if ( result.Value == null )
-                {
-                    return Result.Failure( "Item not found in repository." );
-                }
-
-                _dbContext.Remove( result.Value );
-                _dbContext.SaveChanges();
-                
-                return Result.Ok();
+                return;
             }
-            catch( Exception e )
-            {
-                return Result.Failure( e.Message );
-            }
+
+            _dbContext.Remove(item );
+            _dbContext.SaveChanges();
+        }
+        public void Update(T item)
+        {
+            _dbContext.Update( item );
+            _dbContext.SaveChanges();
         }
 
-        public Result Update(T item)
+        public bool SaveChanges()
         {
-            try
-            {
-                _dbContext.Update( item );
-                _dbContext.SaveChanges();
-                return Result.Ok();
-            }
-            catch( Exception e )
-            {
-                return Result.Failure( e.Message );
-            }
+            return _dbContext.SaveChanges() > 0;
         }
     }
 }
