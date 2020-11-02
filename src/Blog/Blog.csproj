@@ -26,10 +26,6 @@
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="2.2.4" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Results\Results.csproj" />
-  </ItemGroup>
-
   <!-- Required due to an issue with the dotnet ef CLI tool -->
   <!-- dotnet ef CLI creates file at $(MSBuildProjectDirectory)/obj/ before executing MSBuild -->
   <Target Name="MoveEntityFrameworkCoreTargets">
