@@ -1,19 +1,15 @@
 ﻿using System;
-using System.Data.SqlClient;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.SpaServices;
 using Microsoft.Extensions.Configuration;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
+using System.Data.SqlClient;
 using System.Runtime.InteropServices;
 
 namespace MarkDonile.Blog
@@ -35,8 +31,7 @@ namespace MarkDonile.Blog
             Console.WriteLine($"Using database connection string: {connectionString}");
 
             services.AddEntityFrameworkNpgsql()
-               .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString))
-               .BuildServiceProvider();
+               .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
             services.AddIdentity<AppUser, IdentityRole>()
                 .AddEntityFrameworkStores<DatabaseContext>()
@@ -54,7 +49,7 @@ namespace MarkDonile.Blog
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -71,8 +66,9 @@ namespace MarkDonile.Blog
             }
 
             app.UseStaticFiles();
+            app.UseRouting();
             app.UseAuthentication();
-            app.UseMvc();
+            app.UseEndpoints(cfg => cfg.MapControllers());
             app.UseSpaStaticFiles();
             app.UseSpa(spa => {
                 spa.Options.SourcePath = "./wwwroot/dist";
