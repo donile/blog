@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
-using System.Data.SqlClient;
-using System.Runtime.InteropServices;
 
 namespace MarkDonile.Blog
 {
@@ -78,42 +76,6 @@ namespace MarkDonile.Blog
             DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
         }
 
-        private string MsSqlServerConnectionString()
-        {
-            if(RuntimeInformation.IsOSPlatform(OSPlatform.Windows)){
-                return WindowsConnectionString();
-            }
-            else if(RuntimeInformation.IsOSPlatform(OSPlatform.Linux)){
-                return LinuxConnectionString();
-            }
-            else if(RuntimeInformation.IsOSPlatform(OSPlatform.OSX)){
-                return MacConnectionString();
-            }
-            else{
-                throw new NotImplementedException();
-            }
-        }
-
-        private string LinuxConnectionString()
-        {
-            var connectionBuilder = new SqlConnectionStringBuilder();
-            connectionBuilder.ConnectionString = Configuration["Database:Linux:ConnectionString"];
-            connectionBuilder.UserID = Configuration["Database:Linux:UserId"];
-            connectionBuilder.Password = Configuration["Database:Linux:Password"];
-
-            return connectionBuilder.ConnectionString;
-        }
-        
-        private string WindowsConnectionString()
-        {
-            return Configuration["Database:Windows:ConnectionString"];
-        }
-
-        private string MacConnectionString()
-        {
-            throw new NotImplementedException();
-        }
-
         private string PostgreSqlConnectionString()
         {
             string userId = Configuration["Database:PostgreSQL:UserId"];
@@ -125,24 +87,6 @@ namespace MarkDonile.Blog
             string connectionString = $"User ID={userId}; Password={password}; Host={host}; Port={port}; Database={databaseName};";
 
             return connectionString;
-        }
-
-        private string ConnectionString()
-        {
-            string environment = Configuration["ASPNETCORE_ENVIRONMENT"];
-            Console.WriteLine($"Using ASPNETCORE_ENVIRONMENT: {environment}");
-
-            if (environment == "Development")
-            {
-                return Configuration["Database:MSSQLServer:Windows:ConnectionString"];
-            }
-            
-            if (environment == "Production")
-            {
-                return Configuration["Database:MSSQLServer:Azure:ConnectionString"];
-            }
-
-            throw new Exception($"Invalid environment: {environment}");
         }
     }
 }

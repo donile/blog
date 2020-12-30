@@ -1,5 +1,11 @@
 # markdonile.com blog
 
+## Setup
+Add environment variable `POSTGRES_PASSWORD`
+
+## Start PostgreSQL Database Container
+`> docker run --name postgres-13.1 -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" -d postgres:13.1-alpine`
+
 ## Dependencies
 [Coverlet](https://github.com/coverlet-coverage/coverlet)
 
