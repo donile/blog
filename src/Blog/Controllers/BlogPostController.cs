@@ -1,4 +1,5 @@
 using MarkDonile.Blog.DataAccess;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MarkDonile.Blog.Controllers
@@ -28,6 +29,13 @@ namespace MarkDonile.Blog.Controllers
             }
             
             return Ok();
+        }
+
+        [Authorize]
+        [HttpPost("blog-posts")]
+        public IActionResult CreateBlogPost()
+        {
+            return Created("http://localhost:5000/blog-posts/1", new { FakeProperty="fakeness" });
         }
     }
 }
