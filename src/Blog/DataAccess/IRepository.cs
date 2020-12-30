@@ -1,15 +1,14 @@
-using Results;
 using System.Collections.Generic;
 
 namespace MarkDonile.Blog.DataAccess
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T>
     {
-        Result Add( T item );
-        Result Add( IEnumerable<T> items );
-        Result<T> Get( params object[] keyValues );
-        Result<IEnumerable<T>> GetAll();
-        Result Update( T item );
-        Result Remove( params object[] keyValues );
+        void Add( T item );
+        void Add( IEnumerable<T> items );
+        T Get( params object[] keyValues );
+        IEnumerable<T> GetAll();
+        void Update( T item );
+        void Remove( params object[] keyValues );
     }
 }

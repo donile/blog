@@ -20,7 +20,7 @@ namespace Blog.Tests
 
             var mockBlogPostRepository = new Mock<IBlogPostRepository>();
             mockBlogPostRepository
-                .Setup(x => x.GetBlogPost(id))
+                .Setup(x => x.Get(id))
                 .Returns(fixture.Create<BlogPost>());
             
             var sut = new BlogPostController(mockBlogPostRepository.Object);
@@ -37,7 +37,7 @@ namespace Blog.Tests
 
             var mockBlogPostRepository = new Mock<IBlogPostRepository>();
             mockBlogPostRepository
-                .Setup(x => x.GetBlogPost(id))
+                .Setup(x => x.Get(id))
                 .Returns<BlogPost>(null);
             
             var sut = new BlogPostController(mockBlogPostRepository.Object);
