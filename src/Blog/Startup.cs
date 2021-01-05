@@ -6,27 +6,28 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using MarkDonile.Blog.DataAccess;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using MarkDonile.Blog.Extensions;
+using MarkDonile.Blog.Options;
 
 namespace MarkDonile.Blog
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration["CONNECTIONSTRING"];
+            string connectionString = _configuration["CONNECTIONSTRING"];
             Console.WriteLine($"Using database connection string: {connectionString}");
 
             services.AddEntityFrameworkNpgsql()
@@ -35,20 +36,13 @@ namespace MarkDonile.Blog
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "./wwwroot/dist";
             });
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options => 
-                    { 
-                        options.SaveToken = true;
-                        options.TokenValidationParameters = new TokenValidationParameters 
-                        {
-                            ValidateIssuerSigningKey = true,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("passwordpasswordpasswordpassword")),
-                            ValidateAudience = false,
-                            ValidateLifetime = false,
-                            ValidateIssuer = false
-                        };
-                    });
+            
+            services.AddBlogAuthentication(new BlogAuthenticationOptions {
+                Environment = _environment,
+                Audience = _configuration["Jwt:Audience"],
+                Issuer = _configuration["Jwt:Issuer"],
+                Domain = _configuration["Jwt:Okta:OktaDomain"],
+            });
 
             services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
 
