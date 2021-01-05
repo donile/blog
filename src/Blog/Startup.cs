@@ -5,45 +5,48 @@ using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using MarkDonile.Blog.DataAccess;
-using MarkDonile.Blog.Models;
+using MarkDonile.Blog.Extensions;
+using MarkDonile.Blog.Options;
 
 namespace MarkDonile.Blog
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
-            Configuration = configuration;
+            _configuration = configuration;
+            _environment = environment;
         }
 
-        public IConfiguration Configuration { get; }
+        private readonly IConfiguration _configuration;
+        private readonly IWebHostEnvironment _environment;
 
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = PostgreSqlConnectionString();
+            string connectionString = _configuration["CONNECTIONSTRING"];
             Console.WriteLine($"Using database connection string: {connectionString}");
 
             services.AddEntityFrameworkNpgsql()
                .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
 
-            services.AddIdentity<AppUser, IdentityRole>()
-                .AddEntityFrameworkStores<DatabaseContext>()
-                .AddDefaultTokenProviders();
-
             services.AddSpaStaticFiles(options => {
                 options.RootPath = "./wwwroot/dist";
+            });
+            
+            services.AddBlogAuthentication(new BlogAuthenticationOptions {
+                Environment = _environment,
+                Audience = _configuration["Jwt:Audience"],
+                Issuer = _configuration["Jwt:Issuer"],
+                Domain = _configuration["Jwt:Okta:OktaDomain"],
             });
 
             services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
 
             services.AddMvc();
-
-            services.ConfigureApplicationCookie(options => options.LoginPath = "/Admin/UserAuthorization/SignIn");
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -66,27 +69,13 @@ namespace MarkDonile.Blog
             app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
+            app.UseAuthorization();
             app.UseEndpoints(cfg => cfg.MapControllers());
             app.UseSpaStaticFiles();
             app.UseSpa(spa => {
                 spa.Options.SourcePath = "./wwwroot/dist";
                 spa.Options.DefaultPage = "/index.html";
             });
-
-            DatabaseContext.CreateAdminUser(app.ApplicationServices, Configuration).Wait();
-        }
-
-        private string PostgreSqlConnectionString()
-        {
-            string userId = Configuration["Database:PostgreSQL:UserId"];
-            string password = Configuration["Database:PostgreSQL:Password"];
-            string host = Configuration["Database:PostgreSQL:Host"];
-            string port = Configuration["Database:PostgreSQL:Port"];
-            string databaseName = Configuration["Database:PostgreSQL:Name"];
-
-            string connectionString = $"User ID={userId}; Password={password}; Host={host}; Port={port}; Database={databaseName};";
-
-            return connectionString;
         }
     }
 }

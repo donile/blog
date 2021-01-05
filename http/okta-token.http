@@ -1,0 +1,40 @@
+@host = dev-4992980.okta.com
+@redirect_uri = http%3A%2F%2Flocalhost%3A8080%2Flogin%2Fcallback
+
+###
+POST https://{{host}}/api/v1/authn
+Content-Type: application/json
+
+{
+    "password":"{{$processEnv OKTA_PASSWORD}}",
+    "username":"{{$processEnv OKTA_USERNAME}}",
+    "options": {
+        "warnBeforePasswordExpired":true,
+        "multiOptionalFactorEnroll":true
+    }
+}
+
+###
+@code_challenge = <hashed-code-verifier>
+
+GET https://{{host}}/oauth2/default/v1/authorize
+    ?client_id={{$processEnv OKTA_CLIENT_ID}}
+    &response_type=code
+    &scope=openid
+    &redirect_uri={{redirect_uri}}
+    &state=state
+    &code_challenge_method=S256
+    &code_challenge=<code-challenge>
+
+###
+@code_verifier = <code_verifier-generated-by-SPA-or-app-that-matches-code_challenge>
+@code = <code-returned-by-authorization-server-and-pasted-here>
+
+POST https://{{host}}/oauth2/default/v1/token
+    ?client_id={{$processEnv OKTA_CLIENT_ID}}
+    &redirect_uri={{redirect_uri}}
+    &grant_type=authorization_code
+    &code_verifier={{code_verifier}}
+    &code={{code}}
+Content-Type: application/x-www-form-urlencoded
+Accept: application/json
