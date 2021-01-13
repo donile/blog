@@ -74,6 +74,9 @@ namespace MarkDonile.Blog
             app.UseAuthorization();
             app.UseEndpoints(cfg => cfg.MapControllers());
             app.UseSwagger();
+            app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API");
+            });
             app.UseSpaStaticFiles();
             app.UseSpa(spa => {
                 spa.Options.SourcePath = "./wwwroot/dist";
