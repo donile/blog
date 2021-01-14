@@ -1,4 +1,5 @@
 using MarkDonile.Blog.DataAccess;
+using MarkDonile.Blog.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,8 +34,13 @@ namespace MarkDonile.Blog.Controllers
 
         [Authorize]
         [HttpPost("blog-posts")]
-        public IActionResult CreateBlogPost()
+        public IActionResult CreateBlogPost(CreateBlogPostDto bpDto)
         {
+            if (bpDto is null)
+            {
+                return BadRequest();
+            }
+            
             return Created("http://localhost:5000/blog-posts/1", new { FakeProperty="fakeness" });
         }
     }
