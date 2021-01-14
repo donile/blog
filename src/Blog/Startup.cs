@@ -44,6 +44,8 @@ namespace MarkDonile.Blog
                 Domain = _configuration["Jwt:Okta:OktaDomain"],
             });
 
+            services.AddSwaggerGen();
+
             services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
 
             services.AddMvc();
@@ -71,6 +73,10 @@ namespace MarkDonile.Blog
             app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(cfg => cfg.MapControllers());
+            app.UseSwagger();
+            app.UseSwaggerUI(options => {
+                options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API");
+            });
             app.UseSpaStaticFiles();
             app.UseSpa(spa => {
                 spa.Options.SourcePath = "./wwwroot/dist";
