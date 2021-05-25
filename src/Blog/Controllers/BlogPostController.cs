@@ -36,7 +36,7 @@ namespace MarkDonile.Blog.Controllers
                 return NotFound();
             }
             
-            return Ok();
+            return Ok(blogPost);
         }
 
         [Authorize]
@@ -48,15 +48,15 @@ namespace MarkDonile.Blog.Controllers
                 return BadRequest();
             }
             
-            var bp = _mapper.Map<BlogPost>(blogPostToCreate);
+            var blogPost = _mapper.Map<BlogPost>(blogPostToCreate);
 
-            _blogPostRepository.Add(bp);
+            _blogPostRepository.Add(blogPost);
             _blogPostRepository.SaveChanges();
 
             return CreatedAtRoute(
                 nameof(GetBlogPost),
-                new { id = bp.Id },
-                bp
+                new { id = blogPost.Id },
+                blogPost
             );
         }
     }
