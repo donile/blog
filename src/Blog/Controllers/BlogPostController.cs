@@ -1,5 +1,7 @@
+using AutoMapper;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Dto;
+using MarkDonile.Blog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,11 +9,16 @@ namespace MarkDonile.Blog.Controllers
 {
     public class BlogPostController : Controller
     {
-        private IBlogPostRepository _repository;
+        private IBlogPostRepository _blogPostRepository;
+        private readonly IMapper _mapper;
 
-        public BlogPostController( IBlogPostRepository repository )
+        public BlogPostController(
+            IBlogPostRepository repository,
+            IMapper mapper
+        )
         {
-            _repository = repository;
+            _blogPostRepository = repository;
+            _mapper = mapper;
         }
 
         public ViewResult List()
@@ -19,10 +26,10 @@ namespace MarkDonile.Blog.Controllers
             return View();
         }
 
-        [HttpGet("blog-posts/{id}")]
+        [HttpGet("blog-posts/{id}", Name = nameof(GetBlogPost))]
         public IActionResult GetBlogPost(int id)
         {
-            var blogPost = _repository.Get(id);
+            var blogPost = _blogPostRepository.Get(id);
 
             if (blogPost is null)
             {
@@ -34,14 +41,23 @@ namespace MarkDonile.Blog.Controllers
 
         [Authorize]
         [HttpPost("blog-posts")]
-        public IActionResult CreateBlogPost(CreateBlogPostDto bpDto)
+        public IActionResult CreateBlogPost(CreateBlogPostDto blogPostToCreate)
         {
-            if (bpDto is null)
+            if (blogPostToCreate is null)
             {
                 return BadRequest();
             }
             
-            return Created("http://localhost:5000/blog-posts/1", new { FakeProperty="fakeness" });
+            var bp = _mapper.Map<BlogPost>(blogPostToCreate);
+
+            _blogPostRepository.Add(bp);
+            _blogPostRepository.SaveChanges();
+
+            return CreatedAtRoute(
+                nameof(GetBlogPost),
+                new { id = bp.Id },
+                bp
+            );
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -9,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Extensions;
 using MarkDonile.Blog.Options;
+using MarkDonile.Blog.Dto;
+using MarkDonile.Blog.Models;
 
 namespace MarkDonile.Blog
 {
@@ -42,6 +45,10 @@ namespace MarkDonile.Blog
                 Audience = _configuration["Jwt:Audience"],
                 Issuer = _configuration["Jwt:Issuer"],
                 Domain = _configuration["Jwt:Okta:OktaDomain"],
+            });
+
+            services.AddAutoMapper(options => {
+                options.CreateMap<CreateBlogPostDto, BlogPost>();
             });
 
             services.AddSwaggerGen();

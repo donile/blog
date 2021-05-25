@@ -10,5 +10,6 @@ namespace MarkDonile.Blog.DataAccess
         IEnumerable<T> GetAll();
         void Update( T item );
         void Remove( params object[] keyValues );
+        bool SaveChanges();
     }
 }
