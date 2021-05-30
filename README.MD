@@ -5,7 +5,7 @@ Add environment variable `POSTGRES_PASSWORD`
 Add environment variable `ASPNETCORE_CONNECTIONSTRING`
 
 ## Start PostgreSQL Database Container
-`> docker run --name postgres-13.1 -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" -d postgres:13.1-alpine`
+`> docker run --name postgres-13.1 -p 5432:5432 -e POSTGRES_PASSWORD="${POSTGRES_PASSWORD}" -d postgres:13.1-alpine`
 
 ## Dependencies
 [Coverlet](https://github.com/coverlet-coverage/coverlet)
