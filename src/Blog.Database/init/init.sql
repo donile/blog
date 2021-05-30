@@ -1,0 +1,2 @@
+CREATE ROLE :role WITH LOGIN PASSWORD :password;
+CREATE DATABASE :database;
