@@ -13,11 +13,6 @@ namespace MarkDonile.Blog.DataAccess
 
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSnakeCaseNamingConvention();
-        }
-
         public DbSet<BlogPost> BlogPosts { get; set; }
 
     }

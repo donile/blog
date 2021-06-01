@@ -31,14 +31,17 @@ namespace MarkDonile.Blog
         public void ConfigureServices(IServiceCollection services)
         {
             string connectionString = _configuration["CONNECTION_STRING"];
-            Console.WriteLine($"Using database connection string: {connectionString}");
+            if (_environment.IsDevelopment())
+            {
+                Console.WriteLine($"Using database connection string: {connectionString}");
+            }
 
             services.AddEntityFrameworkNpgsql()
-               .AddDbContext<DatabaseContext>(options => options.UseNpgsql(connectionString));
-
-            services.AddSpaStaticFiles(options => {
-                options.RootPath = "./wwwroot/dist";
-            });
+               .AddDbContext<DatabaseContext>(options => 
+                    options
+                        .UseNpgsql(connectionString)
+                        .UseSnakeCaseNamingConvention()
+                );
             
             services.AddBlogAuthentication(new BlogAuthenticationOptions {
                 Environment = _environment,
@@ -75,7 +78,6 @@ namespace MarkDonile.Blog
                 });
             }
 
-            app.UseStaticFiles();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -83,11 +85,6 @@ namespace MarkDonile.Blog
             app.UseSwagger();
             app.UseSwaggerUI(options => {
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "Blog API");
-            });
-            app.UseSpaStaticFiles();
-            app.UseSpa(spa => {
-                spa.Options.SourcePath = "./wwwroot/dist";
-                spa.Options.DefaultPage = "/index.html";
             });
         }
     }
