@@ -7,6 +7,12 @@
       "commands": [
         "reportgenerator"
       ]
+    },
+    "evolve.tool": {
+      "version": "3.0.0",
+      "commands": [
+        "evolve"
+      ]
     }
   }
 }

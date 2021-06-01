@@ -26,6 +26,12 @@ namespace MarkDonile.Blog.Controllers
             return View();
         }
 
+        [HttpGet("blog-posts")]
+        public IActionResult GetBlogPosts()
+        {
+            return Ok(_blogPostRepository.GetAll());
+        }
+
         [HttpGet("blog-posts/{id}", Name = nameof(GetBlogPost))]
         public IActionResult GetBlogPost(int id)
         {
