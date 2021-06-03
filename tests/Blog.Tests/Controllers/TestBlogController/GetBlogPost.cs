@@ -29,7 +29,7 @@ namespace Blog.Tests
             var sut = new BlogPostController(mockBlogPostRepository.Object, mockMapper.Object);
             var actual = sut.GetBlogPost(id);
 
-            Assert.That(actual, Is.TypeOf<OkResult>());
+            Assert.That(actual, Is.TypeOf<OkObjectResult>());
         }
 
         [Test]
