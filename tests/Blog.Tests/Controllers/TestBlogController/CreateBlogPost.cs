@@ -14,20 +14,6 @@ namespace Blog.Tests
     public class CreateBlogPost
     {        
         [Test]
-        public void If_CreateBlogPostDto_Is_Null_Return_Bad_Request()
-        {
-            var mockBlogPostRepository = new Mock<IBlogPostRepository>();
-            var blogPostRepository = mockBlogPostRepository.Object;
-
-            var mockMapper = new Mock<IMapper>();
-
-            var controller = new BlogPostController(blogPostRepository, mockMapper.Object);
-            var result = controller.CreateBlogPost(null);
-
-            Assert.That(result, Is.InstanceOf<BadRequestResult>());
-        }
-
-        [Test]
         public void If_CreateBlogPostDto_Is_Valid_Return_CreatedResult()
         {
             var fixture = new Fixture();

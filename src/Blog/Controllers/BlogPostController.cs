@@ -7,7 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MarkDonile.Blog.Controllers
 {
-    public class BlogPostController : Controller
+    [ApiController]
+    public class BlogPostController : ControllerBase
     {
         private IBlogPostRepository _blogPostRepository;
         private readonly IMapper _mapper;
@@ -19,11 +20,6 @@ namespace MarkDonile.Blog.Controllers
         {
             _blogPostRepository = repository;
             _mapper = mapper;
-        }
-
-        public ViewResult List()
-        {
-            return View();
         }
 
         [HttpGet("blog-posts")]
@@ -49,11 +45,6 @@ namespace MarkDonile.Blog.Controllers
         [HttpPost("blog-posts")]
         public IActionResult CreateBlogPost(CreateBlogPostDto blogPostToCreate)
         {
-            if (blogPostToCreate is null)
-            {
-                return BadRequest();
-            }
-            
             var blogPost = _mapper.Map<BlogPost>(blogPostToCreate);
 
             _blogPostRepository.Add(blogPost);
