@@ -1,5 +1,5 @@
 CREATE TABLE blog_posts (
-    id INT,
+    id UUID,
     post TEXT,
     written_date TIMESTAMP,
     release_date TIMESTAMP,
