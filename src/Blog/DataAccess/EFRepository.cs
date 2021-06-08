@@ -16,13 +16,11 @@ namespace MarkDonile.Blog.DataAccess
         public void Add(T item)
         {
             _dbContext.Set<T>().Add(item);
-            _dbContext.SaveChanges();
         }
 
         public void Add(IEnumerable<T> items)
         {
             _dbContext.Set<T>().AddRange(items);
-            _dbContext.SaveChanges();
         }
 
         public T Get(params object[] keyValues)
@@ -45,12 +43,10 @@ namespace MarkDonile.Blog.DataAccess
             }
 
             _dbContext.Remove(item );
-            _dbContext.SaveChanges();
         }
         public void Update(T item)
         {
             _dbContext.Update( item );
-            _dbContext.SaveChanges();
         }
 
         public bool SaveChanges()
