@@ -4,6 +4,7 @@ using MarkDonile.Blog.Dto;
 using MarkDonile.Blog.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace MarkDonile.Blog.Controllers
 {
@@ -55,6 +56,16 @@ namespace MarkDonile.Blog.Controllers
                 new { id = blogPost.Id },
                 blogPost
             );
+        }
+
+        [Authorize]
+        [HttpDelete("blog-posts/{blogPostId}")]
+        public IActionResult DeleteBlogPost(Guid blogPostId)
+        {
+            _blogPostRepository.Remove(blogPostId);
+            _blogPostRepository.SaveChanges();
+            
+            return NoContent();
         }
     }
 }

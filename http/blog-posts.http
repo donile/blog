@@ -1,6 +1,7 @@
 @token = eyJraWQiOiJrU2VlVHRiSldkYjdVc1VMUE1iNVAzcVBIR0tBSjR2eWpMQnVCRDNFN3JNIiwiYWxnIjoiUlMyNTYifQ.eyJ2ZXIiOjEsImp0aSI6IkFULkpVOEY5RVktUTJhX1cyRlVYNFdQSjUyZm4tYU5zUkxqRklhVUV1eHIxSFEiLCJpc3MiOiJodHRwczovL2Rldi00OTkyOTgwLm9rdGEuY29tL29hdXRoMi9kZWZhdWx0IiwiYXVkIjoiYXBpOi8vZGVmYXVsdCIsImlhdCI6MTYyMjM4MjQ2MSwiZXhwIjoxNjIyMzg2MDYxLCJjaWQiOiIwb2EzOG5sYTNQRE1WY0ZmODVkNiIsInVpZCI6IjAwdTJ1YmtndnlzcDlVb3BrNWQ2Iiwic2NwIjpbIm9wZW5pZCJdLCJzdWIiOiJkb25pbGVAZ21haWwuY29tIn0.BkzG11APB10o5WTymBWURE3-CHGkY07tKxt567ug1bPTsIn7LKkOE61HcHJE6F7m78IN84Rd00YCF30ktjOSmIw4KM5eDPdbd8F_rAeWXqFawFAtQpgIXKZ5V5fDXbVbWkzXOYHLnM2_QDHOAsn8IfdGDptL28DdB42rqa-uVGb-oyX_aketJtcGlM6-fWs0pSpxKNyE4zYG4-NWwey8Bpd7wJKVGKMWm-YiTpo3nnZxhaoHd4UBLOqwzrZyBeo74L51Fqu0QUEQl5yvU6hYnUvT8r3Av8KFuNw685FPBtf740uAKiYmkVFFaBlR6qNePsntXoZFy0m_HqqhAEUUAg
 
 ###
+# @name GetBlogPosts
 GET http://localhost:5000/blog-posts
 
 ###
@@ -21,3 +22,21 @@ Content-Type: application/json
     "writtenDate": "2021-06-07T07:54:00.0Z",
     "releaseDate": "2021-06-07T07:54:00.0Z"
 }
+
+###
+# Return 204 No Content
+@invalidId = d46852e2-173b-40c9-9d01-83358f3338b6
+DELETE http://localhost:5000/blog-posts/{{invalidId}}
+Authorization: Bearer {{token}}
+
+###
+# Return 400 Bad Request - blogPostId is not a GUID
+@invalidGuid = a
+DELETE http://localhost:5000/blog-posts/{{invalidGuid}}
+Authorization: Bearer {{token}}
+
+###
+# Return 204 No Content
+@blogPostId = {{GetBlogPosts.response.body.$[0].id}}
+DELETE http://localhost:5000/blog-posts/{{blogPostId}}
+Authorization: Bearer {{token}}
