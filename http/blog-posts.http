@@ -40,3 +40,16 @@ Authorization: Bearer {{token}}
 @blogPostId = {{GetBlogPosts.response.body.$[0].id}}
 DELETE http://localhost:5000/blog-posts/{{blogPostId}}
 Authorization: Bearer {{token}}
+
+###
+# Return 200 OK - Update existing BlogPost
+PUT http://localhost:5000/blog-posts/{{blogPostId}}
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+    "title": "updated test title",
+    "post": "updated test post",
+    "writtenDate": "2021-06-07T07:54:00.0Z",
+    "releaseDate": "2021-06-07T07:54:00.0Z"
+}

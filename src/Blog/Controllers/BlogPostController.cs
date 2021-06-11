@@ -67,5 +67,24 @@ namespace MarkDonile.Blog.Controllers
             
             return NoContent();
         }
+
+        [Authorize]
+        [HttpPut("blog-posts/{blogPostId}")]
+        public IActionResult SaveBlogPost(Guid blogPostId, CreateBlogPostDto blogPostDto)
+        {
+            var blogPost = _blogPostRepository.Get(blogPostId);
+
+            if (blogPost is null)
+            {
+                return CreateBlogPost(blogPostDto);
+            }
+
+            _mapper.Map(blogPostDto, blogPost);
+
+            _blogPostRepository.Update(blogPost);
+            _blogPostRepository.SaveChanges();
+
+            return Ok();
+        }
     }
 }
