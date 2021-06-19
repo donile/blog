@@ -57,6 +57,7 @@ namespace MarkDonile.Blog
             services.AddSwaggerGen();
 
             services.AddTransient<IBlogPostRepository, EFBlogPostRepository>();
+            services.AddTransient<IAuthorRepository, EFAuthorRepository>();
 
             services.AddMvc();
         }
