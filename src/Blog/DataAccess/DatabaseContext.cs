@@ -13,9 +13,13 @@ namespace MarkDonile.Blog.DataAccess
             modelBuilder.Entity<BlogPost>()
                 .Property(bp => bp.Id)
                     .ValueGeneratedOnAdd();
+            
+            modelBuilder.Entity<Author>()
+                .Property(a => a.Id)
+                    .ValueGeneratedOnAdd();
         }
 
         public DbSet<BlogPost> BlogPosts { get; set; }
-
+        public DbSet<Author> Authors { get; set; }
     }
 }
