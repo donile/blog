@@ -1,5 +1,6 @@
 using System;
 using AutoFixture;
+using AutoMapper;
 using MarkDonile.Blog.Controllers;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Models;
@@ -25,8 +26,10 @@ namespace Blog.Tests
             mockAuthorRepository
                 .Setup(repository => repository.Get(authorId))
                 .Returns(author);
+
+            var mockMapper = new Mock<IMapper>();
             
-            var sut = new AuthorController(mockAuthorRepository.Object);
+            var sut = new AuthorController(mockAuthorRepository.Object, mockMapper.Object);
 
             // act
             var actual = sut.GetAuthor(authorId);
@@ -51,8 +54,10 @@ namespace Blog.Tests
             mockAuthorRepository
                 .Setup(repository => repository.Get(authorId))
                 .Returns<Author>(null);
-
-            var sut = new AuthorController(mockAuthorRepository.Object);
+            
+            var mockMapper = new Mock<IMapper>();
+            
+            var sut = new AuthorController(mockAuthorRepository.Object, mockMapper.Object);
 
             // act
             var actual = sut.GetAuthor(authorId);

@@ -52,6 +52,7 @@ namespace MarkDonile.Blog
 
             services.AddAutoMapper(options => {
                 options.CreateMap<CreateBlogPostDto, BlogPost>();
+                options.CreateMap<CreateAuthorDto, Author>();
             });
 
             services.AddSwaggerGen();
