@@ -32,17 +32,17 @@ namespace Blog.Tests
         {
             // arrange
             var createAuthorDto = _fixture.Create<CreateAuthorDto>();
-            var author = _fixture.Create<Author>();
+            var authorWithoutId = _fixture.Build<Author>().Without(a => a.Id).Create();
 
             _mockMapper
                 .Setup(mapper => mapper.Map<Author>(createAuthorDto))
-                .Returns(author);
+                .Returns(authorWithoutId);
 
             // act
             var actual = _sut.PostAuthor(createAuthorDto);
 
             // assert
-            _mockAuthorRepository.Verify(repository => repository.Add(author), Times.Once);
+            _mockAuthorRepository.Verify(repository => repository.Add(It.Is<Author>(a => a.Id == default)), Times.Once);
             _mockAuthorRepository.Verify(repository => repository.SaveChanges(), Times.Once);
         }
 
@@ -51,11 +51,11 @@ namespace Blog.Tests
         {
             // arrange
             var createAuthorDto = _fixture.Create<CreateAuthorDto>();
-            var author = _fixture.Create<Author>();
+            var authorWithoutId = _fixture.Build<Author>().Without(a => a.Id).Create();
 
             _mockMapper
                 .Setup(mapper => mapper.Map<Author>(createAuthorDto))
-                .Returns(author);
+                .Returns(authorWithoutId);
 
             // act
             var actionResult = _sut.PostAuthor(createAuthorDto);
