@@ -1,4 +1,5 @@
 using AutoFixture;
+using AutoFixture.AutoMoq;
 using AutoMapper;
 using MarkDonile.Blog.Controllers;
 using MarkDonile.Blog.DataAccess;
@@ -24,8 +25,9 @@ namespace Blog.Tests
         public void SetUp()
         {
             _fixture = new Fixture();
-            _mockAuthorRepository = new Mock<IAuthorRepository>();
-            _mockMapper = new Mock<IMapper>();
+            _fixture.Customize(new AutoMoqCustomization());
+            _mockAuthorRepository = _fixture.Freeze<Mock<IAuthorRepository>>();
+            _mockMapper = _fixture.Freeze<Mock<IMapper>>();
 
             _createAuthorDto = _fixture.Create<CreateAuthorDto>();
             _authorWithoutId = _fixture.Build<Author>().Without(a => a.Id).Create();
@@ -34,7 +36,7 @@ namespace Blog.Tests
                 .Setup(mapper => mapper.Map<Author>(_createAuthorDto))
                 .Returns(_authorWithoutId);
 
-            _sut = new AuthorController(_mockAuthorRepository.Object, _mockMapper.Object);
+            _sut = _fixture.Build<AuthorController>().OmitAutoProperties().Create();
         }
 
         [Test]
