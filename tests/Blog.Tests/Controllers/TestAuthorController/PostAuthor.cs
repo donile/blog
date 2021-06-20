@@ -13,50 +13,52 @@ namespace Blog.Tests
     [TestFixture]
     public class PostAuthor
     {
+        protected Fixture _fixture;
+        protected Mock<IAuthorRepository> _mockAuthorRepository;
+        protected Mock<IMapper> _mockMapper;
+        protected AuthorController _sut;
+
+        [SetUp]
+        public void SetUp()
+        {
+            _fixture = new Fixture();
+            _mockAuthorRepository = new Mock<IAuthorRepository>();
+            _mockMapper = new Mock<IMapper>();
+            _sut = new AuthorController(_mockAuthorRepository.Object, _mockMapper.Object);
+        }
+
         [Test]
         public void THEN_save_Author_in_repository()
         {
             // arrange
-            var fixture = new Fixture();
-            var createAuthorDto = fixture.Create<CreateAuthorDto>();
-            var author = new Author();
+            var createAuthorDto = _fixture.Create<CreateAuthorDto>();
+            var author = _fixture.Create<Author>();
 
-            var mockAuthorRepository = new Mock<IAuthorRepository>();
-
-            var mockMapper = new Mock<IMapper>();
-            mockMapper
+            _mockMapper
                 .Setup(mapper => mapper.Map<Author>(createAuthorDto))
                 .Returns(author);
 
-            var sut = new AuthorController(mockAuthorRepository.Object, mockMapper.Object);
-
             // act
-            var actual = sut.PostAuthor(createAuthorDto);
+            var actual = _sut.PostAuthor(createAuthorDto);
 
             // assert
-            mockAuthorRepository.Verify(repository => repository.Add(author), Times.Once);
-            mockAuthorRepository.Verify(repository => repository.SaveChanges(), Times.Once);
+            _mockAuthorRepository.Verify(repository => repository.Add(author), Times.Once);
+            _mockAuthorRepository.Verify(repository => repository.SaveChanges(), Times.Once);
         }
 
         [Test]
         public void THEN_return_CreatedAtRouteObjectResult()
         {
             // arrange
-            var fixture = new Fixture();
-            var createAuthorDto = fixture.Create<CreateAuthorDto>();
-            var author = new Author();
+            var createAuthorDto = _fixture.Create<CreateAuthorDto>();
+            var author = _fixture.Create<Author>();
 
-            var mockAuthorRepository = new Mock<IAuthorRepository>();
-
-            var mockMapper = new Mock<IMapper>();
-            mockMapper
+            _mockMapper
                 .Setup(mapper => mapper.Map<Author>(createAuthorDto))
                 .Returns(author);
 
-            var sut = new AuthorController(mockAuthorRepository.Object, mockMapper.Object);
-
             // act
-            var actionResult = sut.PostAuthor(createAuthorDto);
+            var actionResult = _sut.PostAuthor(createAuthorDto);
             var result = actionResult.Result as CreatedAtRouteResult;
             var value = result.Value; 
 
