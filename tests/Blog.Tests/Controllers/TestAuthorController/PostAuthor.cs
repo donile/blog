@@ -47,7 +47,7 @@ namespace Blog.Tests
         }
 
         [Test]
-        public void THEN_return_CreatedAtRouteObjectResult()
+        public void THEN_return_CreatedAtRouteResult()
         {
             // arrange
             var createAuthorDto = _fixture.Create<CreateAuthorDto>();
