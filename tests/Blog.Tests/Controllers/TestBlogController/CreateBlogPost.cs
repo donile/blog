@@ -1,34 +1,29 @@
 using AutoFixture;
-using AutoMapper;
-using MarkDonile.Blog.Controllers;
-using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Dto;
 using MarkDonile.Blog.Models;
 using Microsoft.AspNetCore.Mvc;
-using Moq;
 using NUnit.Framework;
 
-namespace Blog.Tests
+namespace Blog.Tests.Controllers.TestBlogController
 {
     [TestFixture]
-    public class CreateBlogPost
+    public class CreateBlogPost : BaseTest
     {        
         [Test]
         public void If_CreateBlogPostDto_Is_Valid_Return_CreatedResult()
         {
-            var fixture = new Fixture();
-            var blogPostToCreate = fixture.Create<CreateBlogPostDto>();
-            var blogPost = fixture.Create<BlogPost>();
+            // arrange
+            var blogPostToCreate = _fixture.Create<CreateBlogPostDto>();
+            var blogPost = _fixture.Create<BlogPost>();
 
-            var mockBlogPostRepository = new Mock<IBlogPostRepository>();
-
-            var mockMapper = new Mock<IMapper>();
-            mockMapper.Setup(m => m.Map<BlogPost>(blogPostToCreate)).Returns(blogPost);
+            _mockMapper
+                .Setup(m => m.Map<BlogPost>(blogPostToCreate))
+                .Returns(blogPost);
             
-            var controller = new BlogPostController(mockBlogPostRepository.Object, mockMapper.Object);
+            // act
+            var result = _sut.CreateBlogPost(blogPostToCreate);
 
-            var result = controller.CreateBlogPost(blogPostToCreate);
-
+            // assert
             Assert.That(result, Is.InstanceOf<CreatedAtRouteResult>());
         }
     }
