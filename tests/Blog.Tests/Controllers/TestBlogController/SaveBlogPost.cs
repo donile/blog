@@ -1,7 +1,4 @@
 using AutoFixture;
-using AutoMapper;
-using MarkDonile.Blog.Controllers;
-using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Dto;
 using MarkDonile.Blog.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -9,29 +6,21 @@ using Moq;
 using NUnit.Framework;
 using System;
 
-namespace Blog.Tests
+namespace Blog.Tests.Controllers.TestBlogController
 {
     [TestFixture]
-    public class SaveBlogPost
+    public class SaveBlogPost : BaseTest
     {
-        Fixture _fixture;
         Guid _blogPostId;
         CreateBlogPostDto _blogPostDto;
         BlogPost _blogPost;
-        Mock<IBlogPostRepository> _mockBlogPostRepository;
-        Mock<IMapper> _mockMapper;
-        BlogPostController _sut;
 
         [SetUp]
         public void Setup()
         {
-            _fixture = new Fixture();
             _blogPostId = _fixture.Create<Guid>();
             _blogPostDto = _fixture.Create<CreateBlogPostDto>();
             _blogPost = _fixture.Create<BlogPost>();
-            _mockBlogPostRepository = new Mock<IBlogPostRepository>();
-            _mockMapper = new Mock<IMapper>();
-            _sut = new BlogPostController(_mockBlogPostRepository.Object, _mockMapper.Object);
         }
 
         [Test]

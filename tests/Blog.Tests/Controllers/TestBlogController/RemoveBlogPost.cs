@@ -7,41 +7,36 @@ using Moq;
 using NUnit.Framework;
 using System;
 
-namespace Blog.Tests
+namespace Blog.Tests.Controllers.TestBlogController
 {
     [TestFixture]
-    public class RemoveBlogPost
+    public class RemoveBlogPost : BaseTest
     {
+        protected Guid _blogPostId;
+
+        [SetUp]
+        public override void SetUp()
+        {
+            base.SetUp();
+            _blogPostId = _fixture.Create<Guid>();
+        }
+
         [Test]
         public void Remove_BlogPost_From_Repository()
         {
-            // arrange
-            var fixture = new Fixture();
-            var blogPostId = fixture.Create<Guid>(); 
-            var mockBlogPostRepository = new Mock<IBlogPostRepository>();
-            var mockMapper = new Mock<IMapper>();
-            var sut = new BlogPostController(mockBlogPostRepository.Object, mockMapper.Object);
-
             // act
-            sut.DeleteBlogPost(blogPostId);
+            _sut.DeleteBlogPost(_blogPostId);
 
             // assert
-            mockBlogPostRepository.Verify(repository => repository.Remove(blogPostId), Times.Once);
-            mockBlogPostRepository.Verify(repository => repository.SaveChanges(), Times.Once);
+            _mockBlogPostRepository.Verify(repository => repository.Remove(_blogPostId), Times.Once);
+            _mockBlogPostRepository.Verify(repository => repository.SaveChanges(), Times.Once);
         }
 
         [Test]
         public void Returns_204_No_Content()
         {
-            // arrange
-            var fixture = new Fixture();
-            var blogPostId = fixture.Create<Guid>(); 
-            var mockBlogPostRepository = new Mock<IBlogPostRepository>();
-            var mockMapper = new Mock<IMapper>();
-            var sut = new BlogPostController(mockBlogPostRepository.Object, mockMapper.Object);
-
             // act
-            var actual = sut.DeleteBlogPost(blogPostId);
+            var actual = _sut.DeleteBlogPost(_blogPostId);
 
             // assert
             Assert.That(actual, Is.InstanceOf<NoContentResult>());
