@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using AutoMapper;
 using MarkDonile.Blog.DataAccess;
 using MarkDonile.Blog.Dto;
@@ -22,6 +23,13 @@ namespace MarkDonile.Blog.Controllers
         {
             _authorRepository = authorRepository;
             _mapper = mapper;
+        }
+
+        public ActionResult<IEnumerable<Author>> GetAuthors()
+        {
+            var authors = _authorRepository.GetAll();
+
+            return Ok(authors);
         }
 
         [HttpGet("{authorId}", Name = nameof(GetAuthor))]
